@@ -113,7 +113,7 @@ export function calculateNumFailures(data) {
 }
 
 /**
- * Streak
+ * Win Streak
  */
 export function calculateLongestStreaks(data) {
   // data is an array of attempts like:
@@ -205,4 +205,22 @@ export function calculateLongestStreaks(data) {
   return results;
 }
 
+/**
+ * Participation
+ */
+export function calculateParticipationRates(d) {
+  const numbers = d.map(x => x.number);
+  const minDay = Math.min(...numbers);
+  const maxDay = Math.max(...numbers);
+  const nDays = maxDay - minDay + 1;
 
+  const acc = {};
+  for (const { person, number } of d) {
+    if (!acc[person]) {
+      acc[person] = [number];
+    } else {
+      acc[person].push(number);
+    }
+  }
+  return Object.fromEntries(Object.keys(acc).map(k => [k, new Set(acc[k]).size / nDays]));
+}

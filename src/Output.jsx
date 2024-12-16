@@ -5,7 +5,7 @@ import {
   byValsDescending,
   calculateAverageScores,
   calculateLongestStreaks,
-  calculateNumFailures
+  calculateNumFailures, calculateParticipationRates
 } from "./logic.js";
 
 export default function Output({ hist  }) {
@@ -21,6 +21,7 @@ export default function Output({ hist  }) {
   const streaksUnsorted = calculateLongestStreaks(histDerived);
   const streaks = Object.keys(streaksUnsorted).map((k) => [k, streaksUnsorted[k]])
       .sort(([k1, v1], [k2, v2]) => v2.n - v1.n);
+  const participationRates = byValsDescending(calculateParticipationRates(histDerived));
 
   return (
     <>
@@ -57,9 +58,22 @@ export default function Output({ hist  }) {
           <div className="border rounded bg-white text-dark-green">
             <div className="text-2xl font-bold">💫 Longest Streak</div>
             <div>
-              {streaks.map(([person, { n, days }], i) =>
+              {streaks.map(([person, {n, days}], i) =>
                 <div key={i}>
                   {i + 1}) {person} {n} {n > 1 && "(puzzles " + days[0] + " - " + days[1] + ")"}
+                </div>
+              )}
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div className="border rounded bg-white text-dark-green">
+            <div className="text-2xl font-bold">🏅 Participation Rate</div>
+            <div>
+              {participationRates.map(([person, r], i) =>
+                <div key={i}>
+                  {i + 1}) {person} {(Math.round(r * 100) / 100).toFixed(2)}
                 </div>
               )}
             </div>

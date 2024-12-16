@@ -3,8 +3,27 @@ import {
   calculateNumFailures,
   calculateAverageScores,
   parseWordleHistory,
-  calculateLongestStreaks
+  calculateLongestStreaks, calculateParticipationRates
 } from "../src/logic.js";
+
+describe('calculateParticipationRates', () => {
+  test('should work', () => {
+    const data = [
+      {person: 'Sam', number: 1, attempts: 6},
+      {person: 'Mom', number: 2, attempts: null},
+      {person: 'Sam', number: 2, attempts: 6},
+      {person: 'Pauline', number: 2, attempts: 4},
+      {person: 'Pauline', number: 4, attempts: 4},
+      {person: 'Sam', number: 4, attempts: 1},
+      {person: 'Helena', number: 5, attempts: 1}];
+    expect(calculateParticipationRates(data)).toEqual({
+      Sam: 3 / 5,
+      Mom: 1 / 5,
+      Pauline: 2 / 5,
+      Helena: 1 / 5
+    });
+  })
+});
 
 describe('calculateLongestStreams', () => {
   test('should work even for those without wins', () => {
