@@ -3,8 +3,23 @@ import {
   calculateNumFailures,
   calculateAverageScores,
   parseWordleHistory,
-  calculateLongestStreaks, calculateParticipationRates
+  calculateLongestStreaks, calculateParticipationRates, calculateHardestPuzzle
 } from "../src/logic.js";
+
+test('hardestPuzzle', () => {
+  const data = [
+    {person: 'Sam', number: 1, attempts: 6},
+    {person: 'Mom', number: 2, attempts: null},
+    {person: 'Sam', number: 2, attempts: 6},
+    {person: 'Pauline', number: 2, attempts: 4},
+    {person: 'Pauline', number: 4, attempts: 4},
+    {person: 'Sam', number: 4, attempts: 1},
+    {person: 'Helena', number: 5, attempts: 1}];
+  expect(calculateHardestPuzzle(data)).toEqual({
+    number: 2,
+    attempts: { Mom: 7, Sam: 6, Pauline: 4}
+  });
+});
 
 describe('calculateParticipationRates', () => {
   test('should work', () => {
@@ -66,11 +81,12 @@ describe('calculateNumFailures', () => {
       {person: 'Sam', attempts: 1},
       {person: 'Sam', attempts: null},
       {person: 'Sam', attempts: null},
+      {person: 'Helena', attempts: null},
       {person: 'Helena', attempts: 1},
       {person: 'Mom', attempts: null}];
     expect(calculateNumFailures(data)).toEqual({
       Sam: 2,
-      Helena: 0,
+      Helena: 1,
       Mom: 1
     });
   });

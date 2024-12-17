@@ -104,8 +104,9 @@ export function calculateNumFailures(data) {
   const isFailure = x => x.attempts === null;
   for (const x of data) {
     if (isFailure(x)) {
+      console.log("FAILURE", x);
       acc[x.person] = acc[x.person] ? acc[x.person] + 1 : 1;
-    } else if (!acc[x]) {
+    } else if (!acc[x.person]) {
       acc[x.person] = 0;
     }
   }
@@ -223,4 +224,46 @@ export function calculateParticipationRates(d) {
     }
   }
   return Object.fromEntries(Object.keys(acc).map(k => [k, new Set(acc[k]).size / nDays]));
+}
+
+/**
+ * Hardest
+ */
+export function calculateHardestPuzzle(data) {
+// data is an array like:
+  // [
+  //   { person: 'Mom', number: 1043, attempts: 4 },
+  //   { person: 'Mom', number: 1044, attempts: null },
+  //   { person: 'Sam', number: 1043, attempts: 3 },
+  //   ...
+  // ]
+
+  // Group attempts by puzzle number
+  const byNumber = {};
+  for (const entry of data) {
+    if (!byNumber[entry.number]) {
+      byNumber[entry.number] = { total: 0, attempts: {} };
+    }
+    // If attempts is null, treat it as 7
+    const att = (entry.attempts == null) ? 7 : entry.attempts;
+    byNumber[entry.number].total += att;
+    byNumber[entry.number].attempts[entry.person] = att;
+  }
+
+  // Identify the puzzle with the highest total attempts
+  let hardestNumber = null;
+  let maxAttempts = -1;
+
+  for (const number in byNumber) {
+    if (byNumber[number].total > maxAttempts) {
+      maxAttempts = byNumber[number].total;
+      hardestNumber = parseInt(number, 10);
+    }
+  }
+
+  // Return the hardest puzzle data
+  return {
+    number: hardestNumber,
+    attempts: byNumber[hardestNumber].attempts
+  };
 }
