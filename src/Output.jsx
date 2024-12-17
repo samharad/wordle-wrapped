@@ -3,9 +3,9 @@ import { useState } from "react";
 import {
   byValsAscending,
   byValsDescending,
-  calculateAverageScores,
-  calculateLongestStreaks,
-  calculateNumFailures, calculateParticipationRates
+  calculateAverageScores, calculateHardestPuzzle,
+  calculateLongestStreaks, calculateMostFailedPuzzle,
+  calculateNumFailures, calculateParticipationRates, oToA, puzzleByNumber
 } from "./logic.js";
 
 export default function Output({ hist  }) {
@@ -22,6 +22,10 @@ export default function Output({ hist  }) {
   const streaks = Object.keys(streaksUnsorted).map((k) => [k, streaksUnsorted[k]])
       .sort(([k1, v1], [k2, v2]) => v2.n - v1.n);
   const participationRates = byValsDescending(calculateParticipationRates(histDerived));
+  const hardestData = calculateHardestPuzzle(histDerived);
+  const hardestPuzzle = puzzleByNumber(hardestData.number);
+  const mostFailedData = calculateMostFailedPuzzle(histDerived);
+  const mostFailedPuzzle = puzzleByNumber(mostFailedData.number);
 
   return (
     <>
@@ -74,6 +78,50 @@ export default function Output({ hist  }) {
               {participationRates.map(([person, r], i) =>
                 <div key={i}>
                   {i + 1}) {person} {(Math.round(r * 100) / 100).toFixed(2)}
+                </div>
+              )}
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div className="border rounded bg-white text-dark-green">
+            <div className="text-2xl font-bold">😭 Hardest Puzzle (scores)</div>
+            <div>
+              {`${hardestPuzzle.number}, ${hardestPuzzle.date}: ${hardestPuzzle.word}`}
+              {oToA(hardestData.guesses).map(([person, guesses], i) =>
+                <div key={i}>
+                  <div>
+                    {person}
+                  </div>
+                  <div className="m-0 p-0 leading-none">
+                    {guesses.map(line =>
+                      <p>
+                        {line}
+                      </p>)}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div className="border rounded bg-white text-dark-green">
+            <div className="text-2xl font-bold">😢 Hardest Puzzle (most fails)</div>
+            <div>
+              {`${mostFailedPuzzle.number}, ${mostFailedPuzzle.date}: ${mostFailedPuzzle.word}`}
+              {oToA(mostFailedData.guesses).map(([person, guesses], i) =>
+                <div key={i}>
+                  <div>
+                    {person}
+                  </div>
+                  <div className="m-0 p-0 leading-none">
+                    {guesses.map(line =>
+                      <p>
+                        {line}
+                      </p>)}
+                  </div>
                 </div>
               )}
             </div>

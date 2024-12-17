@@ -1,14 +1,25 @@
+import wordlePuzzles from "./wordlePuzzles.js";
+
 /**
  * Util
  */
+export function oToA(o) {
+  return Object.keys(o).map((k) => [k, o[k]])
+}
+
 export function byValsAscending(x) {
-  return Object.keys(x).map((k) => [k, x[k]])
-    .sort(([k1, v1], [k2, v2]) => v1 - v2);
+  return oToA(x).sort(([k1, v1], [k2, v2]) => v1 - v2);
 }
 
 export function byValsDescending(x) {
-  return Object.keys(x).map((k) => [k, x[k]])
-    .sort(([k1, v1], [k2, v2]) => v2 - v1);
+  return oToA(x).sort(([k1, v1], [k2, v2]) => v2 - v1);
+}
+
+/**
+ * Puzzle repo
+ */
+export function puzzleByNumber(n) {
+  return wordlePuzzles[n];
 }
 
 /**
@@ -104,7 +115,6 @@ export function calculateNumFailures(data) {
   const isFailure = x => x.attempts === null;
   for (const x of data) {
     if (isFailure(x)) {
-      console.log("FAILURE", x);
       acc[x.person] = acc[x.person] ? acc[x.person] + 1 : 1;
     } else if (!acc[x.person]) {
       acc[x.person] = 0;
@@ -230,27 +240,25 @@ export function calculateParticipationRates(d) {
  * Hardest
  */
 export function calculateHardestPuzzle(data) {
-// data is an array like:
+  // data is an array like:
   // [
-  //   { person: 'Mom', number: 1043, attempts: 4 },
-  //   { person: 'Mom', number: 1044, attempts: null },
-  //   { person: 'Sam', number: 1043, attempts: 3 },
+  //   { person: 'Mom', number: 1043, attempts: 4, guesses: [...] },
+  //   { person: 'Mom', number: 1044, attempts: null, guesses: [...] },
+  //   { person: 'Sam', number: 1043, attempts: 3, guesses: [...] },
   //   ...
   // ]
 
-  // Group attempts by puzzle number
   const byNumber = {};
   for (const entry of data) {
     if (!byNumber[entry.number]) {
-      byNumber[entry.number] = { total: 0, attempts: {} };
+      byNumber[entry.number] = { total: 0, attempts: {}, guesses: {} };
     }
-    // If attempts is null, treat it as 7
     const att = (entry.attempts == null) ? 7 : entry.attempts;
     byNumber[entry.number].total += att;
     byNumber[entry.number].attempts[entry.person] = att;
+    byNumber[entry.number].guesses[entry.person] = entry.guesses || [];
   }
 
-  // Identify the puzzle with the highest total attempts
   let hardestNumber = null;
   let maxAttempts = -1;
 
@@ -261,9 +269,59 @@ export function calculateHardestPuzzle(data) {
     }
   }
 
-  // Return the hardest puzzle data
   return {
     number: hardestNumber,
-    attempts: byNumber[hardestNumber].attempts
+    attempts: byNumber[hardestNumber].attempts,
+    guesses: byNumber[hardestNumber].guesses
+  };
+}
+
+/**
+ * Most fails
+ */
+export function calculateMostFailedPuzzle(data) {
+  // data is an array like:
+  // [
+  //   { person: 'Mom', number: 1043, attempts: 4, guesses: [...] },
+  //   { person: 'Mom', number: 1044, attempts: null, guesses: [...] },
+  //   { person: 'Sam', number: 1043, attempts: 3, guesses: [...] },
+  //   ...
+  // ]
+
+  const byNumber = {};
+  for (const entry of data) {
+    const att = (entry.attempts == null) ? 7 : entry.attempts;
+    if (!byNumber[entry.number]) {
+      byNumber[entry.number] = { fails: 0, attempts: {}, guesses: {} };
+    }
+    byNumber[entry.number].attempts[entry.person] = att;
+    byNumber[entry.number].guesses[entry.person] = entry.guesses || [];
+
+    // A fail is attempts >= 7
+    if (att >= 7) {
+      byNumber[entry.number].fails++;
+    }
+  }
+
+  let mostFailedNumber = null;
+  let maxFails = -1;
+
+  for (const number in byNumber) {
+    if (byNumber[number].fails > maxFails) {
+      maxFails = byNumber[number].fails;
+      mostFailedNumber = parseInt(number, 10);
+    }
+  }
+
+  // It's possible that no puzzle had any fails. Handle that gracefully:
+  if (mostFailedNumber === null) {
+    return null; // or { fails: 0, attempts: {}, guesses: {} } if you prefer
+  }
+
+  return {
+    number: mostFailedNumber,
+    fails: byNumber[mostFailedNumber].fails,
+    attempts: byNumber[mostFailedNumber].attempts,
+    guesses: byNumber[mostFailedNumber].guesses
   };
 }

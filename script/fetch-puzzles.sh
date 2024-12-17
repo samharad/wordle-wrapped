@@ -46,7 +46,7 @@ echo "Temporary files cleaned up. Done!"
 INPUT_CSV=$OUT
 
 # Output JavaScript file
-OUTPUT_JS="wordlePuzzles.js"
+OUTPUT_JS="src/wordlePuzzles.js"
 # Check if input file exists
 if [[ ! -f "$INPUT_CSV" ]]; then
     echo "Error: Input CSV file '$INPUT_CSV' not found."

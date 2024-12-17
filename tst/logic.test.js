@@ -1,15 +1,33 @@
 import { describe, expect, test } from 'vitest'
 import {
   calculateNumFailures,
+  calculateMostFailedPuzzle,
   calculateAverageScores,
   parseWordleHistory,
   calculateLongestStreaks, calculateParticipationRates, calculateHardestPuzzle
 } from "../src/logic.js";
 
+test('mostFailedPuzzle', () => {
+  const data = [
+    {person: 'Sam', number: 1, attempts: 6},
+    {person: 'Mom', number: 2, attempts: null, guesses: ["fake"]},
+    {person: 'Sam', number: 2, attempts: 6},
+    {person: 'Pauline', number: 2, attempts: 4},
+    {person: 'Pauline', number: 4, attempts: 4},
+    {person: 'Sam', number: 4, attempts: 1},
+    {person: 'Helena', number: 5, attempts: 1}];
+  expect(calculateMostFailedPuzzle(data)).toEqual({
+    number: 2,
+    attempts: { Mom: 7, Sam: 6, Pauline: 4},
+    guesses: { Sam: [], Mom: ["fake"], Pauline: []},
+    fails: 1
+  });
+})
+
 test('hardestPuzzle', () => {
   const data = [
     {person: 'Sam', number: 1, attempts: 6},
-    {person: 'Mom', number: 2, attempts: null},
+    {person: 'Mom', number: 2, attempts: null, guesses: ["fake"]},
     {person: 'Sam', number: 2, attempts: 6},
     {person: 'Pauline', number: 2, attempts: 4},
     {person: 'Pauline', number: 4, attempts: 4},
@@ -17,7 +35,8 @@ test('hardestPuzzle', () => {
     {person: 'Helena', number: 5, attempts: 1}];
   expect(calculateHardestPuzzle(data)).toEqual({
     number: 2,
-    attempts: { Mom: 7, Sam: 6, Pauline: 4}
+    attempts: { Mom: 7, Sam: 6, Pauline: 4},
+    guesses: { Sam: [], Mom: ["fake"], Pauline: []}
   });
 });
 
