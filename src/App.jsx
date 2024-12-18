@@ -24,7 +24,10 @@ function App() {
                 <label htmlFor="chat">Paste your Wordle chat history:</label>
               </div>
               <div>
-                <textarea id="chat" className="bg-white text-dark-green p-2 rounded"></textarea>
+                <textarea id="chat"
+                          className="bg-white text-dark-green p-2 rounded"
+                          onChange={handleSubmit}>
+                </textarea>
               </div>
             </li>
 

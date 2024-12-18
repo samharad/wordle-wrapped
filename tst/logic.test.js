@@ -8,8 +8,19 @@ import {
   calculateParticipationRates,
   calculateHardestPuzzle,
   calculateEasiestAllPlay,
-  calculateMonthlyAverages
+  calculateMonthlyAverages, calculateAverageScoreByDayOfWeek
 } from "../src/logic.js";
+
+test('dailyAverages', () => {
+  const data = [
+    {person: 'Sam', number: 1277, attempts: 6},
+    {person: 'Sam', number: 1278, attempts: 6},
+    {person: 'Helena', number: 1278, attempts: 2}];
+  expect(calculateAverageScoreByDayOfWeek(data)).toEqual({
+    Tue: 6,
+    Wed: 4
+  });
+});
 
 test('monthlyAverages', () => {
   const data = [

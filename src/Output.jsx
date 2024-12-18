@@ -3,11 +3,21 @@ import { useState } from "react";
 import {
   byValsAscending,
   byValsDescending,
-  calculateAverageScores, calculateEasiestAllPlay, calculateHardestPuzzle,
-  calculateLongestStreaks, calculateMonthlyAverages, calculateMostFailedPuzzle,
-  calculateNumFailures, calculateParticipationRates, oToA, puzzleByNumber, restructureMonthlyAverages
+  calculateAverageScoreByDayOfWeek,
+  calculateAverageScores,
+  calculateEasiestAllPlay,
+  calculateHardestPuzzle,
+  calculateLongestStreaks,
+  calculateMonthlyAverages,
+  calculateMostFailedPuzzle,
+  calculateNumFailures,
+  calculateParticipationRates, getHexColor,
+  oToA,
+  puzzleByNumber,
+  restructureDailyAvgs,
+  restructureMonthlyAverages
 } from "./logic.js";
-import {CartesianGrid, Legend, Line, LineChart, XAxis, YAxis} from "recharts";
+import {Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
 
 export default function Output({ hist  }) {
   const [names, setNames] = useState({});
@@ -30,6 +40,7 @@ export default function Output({ hist  }) {
   const easiestAllPlayData = calculateEasiestAllPlay(histDerived);
   const easiestAllPlayPuzzle = easiestAllPlayData && puzzleByNumber(easiestAllPlayData.number);
   const monthlyAverages = calculateMonthlyAverages(histDerived);
+  const dailyAverages = calculateAverageScoreByDayOfWeek(histDerived);
 
   return (
     <>
@@ -159,14 +170,32 @@ export default function Output({ hist  }) {
         <li>
           <div className="border rounded bg-white text-dark-green">
             <div className="text-2xl font-bold">📈 Monthly Trends</div>
-              <LineChart width={500} height={300} data={restructureMonthlyAverages(monthlyAverages)}>
-                <Legend verticalAlign="top" height={36}/>
-                <XAxis dataKey="monthYear"/>
-                <YAxis domain={[1, 7]}/>
-                <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
-                <Line type="linear" dataKey="Mom" stroke="#8884d8" />
-                <Line type="linear" dataKey="Sam Adams" stroke="#82ca9d" />
-              </LineChart>
+            <LineChart width={500} height={300} data={restructureMonthlyAverages(monthlyAverages)}>
+              <Legend verticalAlign="top" height={36}/>
+              <Tooltip />
+              <XAxis dataKey="monthYear"/>
+              <YAxis domain={[1, 7]}/>
+              <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
+              {Object.keys(monthlyAverages).map((k, i) =>
+                <Line type="linear" dataKey={k} stroke={getHexColor(i)} />
+              )}
+            </LineChart>
+            <div>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div className="border rounded bg-white text-dark-green">
+            <div className="text-2xl font-bold">📊 Daily Averages</div>
+            <BarChart width={500} height={500} data={restructureDailyAvgs(dailyAverages)}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="day" />
+              <YAxis domain={[1, 7]} />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="n" fill="#8884d8" />
+            </BarChart>
             <div>
             </div>
           </div>

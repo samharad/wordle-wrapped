@@ -15,6 +15,19 @@ export function byValsDescending(x) {
   return oToA(x).sort(([k1, v1], [k2, v2]) => v2 - v1);
 }
 
+export function getHexColor(i) {
+  const colors = [
+    "#4CAF50", "#5C6BC0", "#FF5722", "#0288D1", "#388E3C", "#7B1FA2", "#D32F2F",
+    "#303F9F", "#1976D2", "#C2185B", "#512DA8", "#00796B", "#8E24AA", "#689F38",
+    "#E64A19", "#5D4037", "#455A64", "#AFB42B", "#F57C00", "#0288D1", "#6A1B9A",
+    "#00897B", "#B71C1C", "#283593", "#1E88E5", "#AD1457", "#311B92", "#01579B",
+    "#E65100", "#33691E", "#3E2723", "#1B5E20", "#4E342E", "#6200EA", "#0D47A1",
+    "#1A237E", "#004D40", "#B71C1C", "#263238", "#673AB7", "#2E7D32", "#BF360C",
+    "#3F51B5", "#D84315", "#37474F", "#2C387E", "#4A148C", "#004D40", "#1B5E20"
+  ];
+  return colors[i % colors.length];
+}
+
 /**
  * Puzzle repo
  */
@@ -513,4 +526,77 @@ export function restructureMonthlyAverages(data) {
   });
 
   return entries.map(x => ({ ...x, monthYear: x.monthYear.substring(0, 3)}));
+}
+
+/**
+ * Daily avg.
+ */
+export function calculateAverageScoreByDayOfWeek(data) {
+  // data: array of attempts like:
+  // [
+  //   { person: 'Mom', number: 1043, attempts: 4 },
+  //   { person: 'Sam', number: 1043, attempts: null },
+  //   ...
+  // ]
+  //
+  // puzzleByNumber(n) returns something like:
+  // { number: 1273, date: "December 13 2024", word: "BOXER" }
+
+  const dayOfWeekMap = {
+    0: 'Sunday',
+    1: 'Monday',
+    2: 'Tuesday',
+    3: 'Wednesday',
+    4: 'Thursday',
+    5: 'Friday',
+    6: 'Saturday'
+  };
+
+  const totals = {}; // dayName -> { total: number, count: number }
+
+  for (const entry of data) {
+    const puzzle = puzzleByNumber(entry.number);
+    if (!puzzle || !puzzle.date) continue;
+
+    // Puzzle date format: "December 13 2024"
+    const parts = puzzle.date.split(' ');
+    if (parts.length < 3) continue;
+    const [monthName, dayStr, yearStr] = parts;
+    const day = parseInt(dayStr, 10);
+    const year = parseInt(yearStr, 10);
+
+    const monthMap = {
+      January: 0, February: 1, March: 2, April: 3, May: 4, June: 5,
+      July: 6, August: 7, September: 8, October: 9, November: 10, December: 11
+    };
+    const month = monthMap[monthName];
+    if (month === undefined) continue;
+
+    const dateObj = new Date(year, month, day);
+    const dayOfWeek = dayOfWeekMap[dateObj.getDay()];
+    if (!dayOfWeek) continue;
+
+    const att = (entry.attempts == null) ? 7 : entry.attempts;
+
+    if (!totals[dayOfWeek]) {
+      totals[dayOfWeek] = { total: 0, count: 0 };
+    }
+
+    totals[dayOfWeek].total += att;
+    totals[dayOfWeek].count += 1;
+  }
+
+  const averages = {};
+  for (const day in totals) {
+    const { total, count } = totals[day];
+    averages[day] = total / count;
+  }
+
+  return Object.fromEntries(
+    Object.entries(averages)
+      .map(([d, s]) => [d.substring(0, 3), s]));
+}
+
+export function restructureDailyAvgs(data) {
+  return Object.entries(data).map(([day, n]) => ({ day, n }));
 }
