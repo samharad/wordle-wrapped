@@ -325,3 +325,59 @@ export function calculateMostFailedPuzzle(data) {
     guesses: byNumber[mostFailedNumber].guesses
   };
 }
+
+/**
+ * Easiest all-play
+ */
+export function calculateEasiestAllPlay(data) {
+  // data is an array like:
+  // [
+  //   { person: 'Mom', number: 1043, attempts: 4, guesses: [...] },
+  //   { person: 'Sam', number: 1043, attempts: null, guesses: [...] },
+  //   { person: 'Mom', number: 1044, attempts: 3, guesses: [...] },
+  //   ...
+  // ]
+
+  // First, get the set of all players
+  const allPlayers = new Set(data.map(d => d.person));
+
+  // Group attempts by puzzle number
+  const byNumber = {};
+  for (const entry of data) {
+    const att = (entry.attempts == null) ? 7 : entry.attempts;
+    if (!byNumber[entry.number]) {
+      byNumber[entry.number] = { attempts: {}, guesses: {} };
+    }
+    byNumber[entry.number].attempts[entry.person] = att;
+    byNumber[entry.number].guesses[entry.person] = entry.guesses || [];
+  }
+
+  // Count how many players participated in each puzzle and sum attempts
+  for (const number in byNumber) {
+    const puzzleData = byNumber[number];
+    const puzzlePlayers = Object.keys(puzzleData.attempts);
+    puzzleData.countPlayers = puzzlePlayers.length;
+    puzzleData.total = puzzlePlayers.reduce((sum, p) => sum + puzzleData.attempts[p], 0);
+  }
+
+  // Find puzzles where all players participated
+  const numPlayers = allPlayers.size;
+  const commonPuzzles = Object.entries(byNumber).filter(([, puzzleData]) => {
+    return puzzleData.countPlayers === numPlayers;
+  });
+
+  if (commonPuzzles.length === 0) {
+    return null; // no puzzle where all players participated
+  }
+
+  // Among these, find the one with the lowest total
+  commonPuzzles.sort((a, b) => a[1].total - b[1].total);
+  const easiest = commonPuzzles[0]; // [number, data]
+
+  return {
+    number: parseInt(easiest[0], 10),
+    total: easiest[1].total,
+    attempts: easiest[1].attempts,
+    guesses: easiest[1].guesses
+  };
+}

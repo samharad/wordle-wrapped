@@ -4,8 +4,42 @@ import {
   calculateMostFailedPuzzle,
   calculateAverageScores,
   parseWordleHistory,
-  calculateLongestStreaks, calculateParticipationRates, calculateHardestPuzzle
+  calculateLongestStreaks, calculateParticipationRates, calculateHardestPuzzle, calculateEasiestAllPlay
 } from "../src/logic.js";
+
+test('easiestAllPlay', () => {
+  const data = [
+    {person: 'Sam', number: 1, attempts: 6},
+    {person: 'Mom', number: 2, attempts: null, guesses: ["fake"]},
+    {person: 'Sam', number: 2, attempts: 6},
+    {person: 'Pauline', number: 2, attempts: 4},
+    {person: 'Pauline', number: 3, attempts: 1},
+    {person: 'Sam', number: 3, attempts: 1, guesses: ["fake"]},
+    {person: 'Helena', number: 3, attempts: 1},
+    {person: 'Mom', number: 3, attempts: 1},
+    {person: 'Pauline', number: 4, attempts: 4},
+    {person: 'Sam', number: 4, attempts: 1},
+    {person: 'Helena', number: 5, attempts: 1}];
+  expect(calculateEasiestAllPlay(data)).toEqual({
+    number: 3,
+    attempts: { Mom: 1, Sam: 1, Pauline: 1, Helena: 1},
+    guesses: { Sam: ["fake"], Mom: [], Pauline: [], Helena: []},
+    total: 4
+  });
+
+  const data1 = [
+    {person: 'Sam', number: 1, attempts: 6},
+    {person: 'Mom', number: 2, attempts: null, guesses: ["fake"]},
+    {person: 'Sam', number: 2, attempts: 6},
+    {person: 'Pauline', number: 2, attempts: 4},
+    {person: 'Pauline', number: 3, attempts: 1},
+    {person: 'Sam', number: 3, attempts: 1, guesses: ["fake"]},
+    {person: 'Mom', number: 3, attempts: 1},
+    {person: 'Pauline', number: 4, attempts: 4},
+    {person: 'Sam', number: 4, attempts: 1},
+    {person: 'Helena', number: 5, attempts: 1}];
+  expect(calculateEasiestAllPlay(data1)).toEqual(null);
+})
 
 test('mostFailedPuzzle', () => {
   const data = [

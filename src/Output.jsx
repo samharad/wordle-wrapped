@@ -3,7 +3,7 @@ import { useState } from "react";
 import {
   byValsAscending,
   byValsDescending,
-  calculateAverageScores, calculateHardestPuzzle,
+  calculateAverageScores, calculateEasiestAllPlay, calculateHardestPuzzle,
   calculateLongestStreaks, calculateMostFailedPuzzle,
   calculateNumFailures, calculateParticipationRates, oToA, puzzleByNumber
 } from "./logic.js";
@@ -26,6 +26,8 @@ export default function Output({ hist  }) {
   const hardestPuzzle = puzzleByNumber(hardestData.number);
   const mostFailedData = calculateMostFailedPuzzle(histDerived);
   const mostFailedPuzzle = puzzleByNumber(mostFailedData.number);
+  const easiestAllPlayData = calculateEasiestAllPlay(histDerived);
+  const easiestAllPlayPuzzle = easiestAllPlayData && puzzleByNumber(easiestAllPlayData.number);
 
   return (
     <>
@@ -127,6 +129,30 @@ export default function Output({ hist  }) {
             </div>
           </div>
         </li>
+
+
+        {easiestAllPlayData &&
+          <li>
+            <div className="border rounded bg-white text-dark-green">
+              <div className="text-2xl font-bold">🍰 Easiest All-Play</div>
+              <div>
+                {`${easiestAllPlayPuzzle.number}, ${easiestAllPlayPuzzle.date}: ${easiestAllPlayPuzzle.word}`}
+                {oToA(easiestAllPlayData.guesses).map(([person, guesses], i) =>
+                  <div key={i}>
+                    <div>
+                      {person}
+                    </div>
+                    <div className="m-0 p-0 leading-none">
+                      {guesses.map(line =>
+                        <p>
+                          {line}
+                        </p>)}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </li>}
 
       </ol>
     </>
