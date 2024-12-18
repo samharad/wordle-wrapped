@@ -19,13 +19,15 @@ import {
 } from "./logic.js";
 import {Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
 
-export default function Output({ hist  }) {
+export default function Output({ hist, width }) {
   const [names, setNames] = useState({});
 
   if (hist.length === 0) {
     return (<></>);
   }
   const histDerived = hist.map(x => ({ ...x, person: names[x.person] || x.person }));
+
+  const chartWidth = Math.min(Math.round(0.8*width), 450);
 
   const averages = byValsAscending(calculateAverageScores(histDerived));
   const failures = byValsAscending(calculateNumFailures(histDerived));
@@ -170,7 +172,7 @@ export default function Output({ hist  }) {
         <li>
           <div className="border rounded bg-white text-dark-green">
             <div className="text-2xl font-bold">📈 Monthly Trends</div>
-            <LineChart width={500} height={300} data={restructureMonthlyAverages(monthlyAverages)}>
+            <LineChart width={chartWidth} height={chartWidth} data={restructureMonthlyAverages(monthlyAverages)}>
               <Legend verticalAlign="top" height={36}/>
               <Tooltip />
               <XAxis dataKey="monthYear"/>
@@ -188,12 +190,11 @@ export default function Output({ hist  }) {
         <li>
           <div className="border rounded bg-white text-dark-green">
             <div className="text-2xl font-bold">📊 Daily Averages</div>
-            <BarChart width={500} height={500} data={restructureDailyAvgs(dailyAverages)}>
+            <BarChart width={chartWidth} height={chartWidth} data={restructureDailyAvgs(dailyAverages)}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="day" />
               <YAxis domain={[1, 7]} />
               <Tooltip />
-              <Legend />
               <Bar dataKey="n" fill="#8884d8" />
             </BarChart>
             <div>
