@@ -14,4 +14,4 @@
 - [ ] Make it save-able
 - [ ] Acquire domain
 - [ ] Deploy
-- [ ] Add year to puzzle data
+- [x] Add year to puzzle data

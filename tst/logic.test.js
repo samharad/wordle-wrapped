@@ -4,8 +4,24 @@ import {
   calculateMostFailedPuzzle,
   calculateAverageScores,
   parseWordleHistory,
-  calculateLongestStreaks, calculateParticipationRates, calculateHardestPuzzle, calculateEasiestAllPlay
+  calculateLongestStreaks,
+  calculateParticipationRates,
+  calculateHardestPuzzle,
+  calculateEasiestAllPlay,
+  calculateMonthlyAverages
 } from "../src/logic.js";
+
+test('monthlyAverages', () => {
+  const data = [
+    {person: 'Sam', number: 1230, attempts: 2},
+    {person: 'Sam', number: 1277, attempts: 2},
+    {person: 'Sam', number: 1278, attempts: 6},
+    {person: 'Helena', number: 1278, attempts: 1}];
+  expect(calculateMonthlyAverages(data)).toEqual({
+    Sam: { "December 2024": 4, "October 2024": 2 },
+    Helena: { "December 2024": 1 }
+  });
+});
 
 test('easiestAllPlay', () => {
   const data = [

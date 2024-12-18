@@ -130,7 +130,6 @@ export default function Output({ hist  }) {
           </div>
         </li>
 
-
         {easiestAllPlayData &&
           <li>
             <div className="border rounded bg-white text-dark-green">

@@ -381,3 +381,68 @@ export function calculateEasiestAllPlay(data) {
     guesses: easiest[1].guesses
   };
 }
+
+/**
+ * Monthly averages
+ */
+export function calculateMonthlyAverages(data) {
+  // data: array of attempts like:
+  // [
+  //   { person: 'Mom', number: 1043, attempts: 4 },
+  //   { person: 'Mom', number: 1044, attempts: null },
+  //   { person: 'Sam', number: 1043, attempts: 3 },
+  //   ...
+  // ]
+  //
+  // puzzleByNumber(n): returns { number, date: "December 13 2024", word: "BOXER" }
+  //
+  // Desired output:
+  // {
+  //   Mom: {
+  //     "December 2024": averageScore,
+  //     "January 2025": averageScore,
+  //     ...
+  //   },
+  //   Sam: {
+  //     ...
+  //   }
+  // }
+
+  const results = {};
+
+  for (const entry of data) {
+    const puzzle = puzzleByNumber(entry.number);
+    // If puzzle or puzzle.date is missing, skip
+    if (!puzzle || !puzzle.date) continue;
+
+    // Extract month and year from puzzle.date
+    // date format: "December 13 2024"
+    // We'll assume format is always "MonthName Day Year"
+    const parts = puzzle.date.split(' ');
+    // parts: ["December", "13", "2024"]
+    const monthYear = parts[0] + ' ' + parts[2];
+
+    const att = (entry.attempts == null) ? 7 : entry.attempts;
+
+    if (!results[entry.person]) {
+      results[entry.person] = {};
+    }
+
+    if (!results[entry.person][monthYear]) {
+      results[entry.person][monthYear] = { total: 0, count: 0 };
+    }
+
+    results[entry.person][monthYear].total += att;
+    results[entry.person][monthYear].count += 1;
+  }
+
+  // Convert totals to averages
+  for (const person in results) {
+    for (const monthYear in results[person]) {
+      const { total, count } = results[person][monthYear];
+      results[person][monthYear] = total / count;
+    }
+  }
+
+  return results;
+}
