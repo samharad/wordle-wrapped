@@ -4,9 +4,10 @@ import {
   byValsAscending,
   byValsDescending,
   calculateAverageScores, calculateEasiestAllPlay, calculateHardestPuzzle,
-  calculateLongestStreaks, calculateMostFailedPuzzle,
-  calculateNumFailures, calculateParticipationRates, oToA, puzzleByNumber
+  calculateLongestStreaks, calculateMonthlyAverages, calculateMostFailedPuzzle,
+  calculateNumFailures, calculateParticipationRates, oToA, puzzleByNumber, restructureMonthlyAverages
 } from "./logic.js";
+import {CartesianGrid, Legend, Line, LineChart, XAxis, YAxis} from "recharts";
 
 export default function Output({ hist  }) {
   const [names, setNames] = useState({});
@@ -28,6 +29,7 @@ export default function Output({ hist  }) {
   const mostFailedPuzzle = puzzleByNumber(mostFailedData.number);
   const easiestAllPlayData = calculateEasiestAllPlay(histDerived);
   const easiestAllPlayPuzzle = easiestAllPlayData && puzzleByNumber(easiestAllPlayData.number);
+  const monthlyAverages = calculateMonthlyAverages(histDerived);
 
   return (
     <>
@@ -152,6 +154,23 @@ export default function Output({ hist  }) {
               </div>
             </div>
           </li>}
+
+
+        <li>
+          <div className="border rounded bg-white text-dark-green">
+            <div className="text-2xl font-bold">📈 Monthly Trends</div>
+              <LineChart width={500} height={300} data={restructureMonthlyAverages(monthlyAverages)}>
+                <Legend verticalAlign="top" height={36}/>
+                <XAxis dataKey="monthYear"/>
+                <YAxis domain={[1, 7]}/>
+                <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
+                <Line type="linear" dataKey="Mom" stroke="#8884d8" />
+                <Line type="linear" dataKey="Sam Adams" stroke="#82ca9d" />
+              </LineChart>
+            <div>
+            </div>
+          </div>
+        </li>
 
       </ol>
     </>

@@ -446,3 +446,71 @@ export function calculateMonthlyAverages(data) {
 
   return results;
 }
+
+/**
+ * For Recharts
+ */
+export function restructureMonthlyAverages(data) {
+  // data shape:
+  // {
+  //   "Mom": { "April 2024": 3.8, "May 2024": 4.2, ... },
+  //   "Pauline": { "April 2024": 3.6, ... }
+  //   ...
+  // }
+
+  const monthMap = {
+    January: 0,
+    February: 1,
+    March: 2,
+    April: 3,
+    May: 4,
+    June: 5,
+    July: 6,
+    August: 7,
+    September: 8,
+    October: 9,
+    November: 10,
+    December: 11
+  };
+
+  // Collect all monthYears
+  const allMonthYears = new Set();
+  for (const person in data) {
+    for (const monthYear in data[person]) {
+      allMonthYears.add(monthYear);
+    }
+  }
+
+  // Convert each monthYear into a structured form for sorting
+  // monthYear = "December 2024"
+  // We'll parse out month and year
+  const parseMonthYear = (my) => {
+    const parts = my.split(' ');
+    const monthName = parts[0];
+    const year = parseInt(parts[1], 10);
+    return { monthIndex: monthMap[monthName], year };
+  };
+
+  const entries = [];
+  for (const monthYear of allMonthYears) {
+    const entry = { monthYear };
+    for (const person in data) {
+      if (data[person].hasOwnProperty(monthYear)) {
+        entry[person] = data[person][monthYear];
+      }
+    }
+    entries.push(entry);
+  }
+
+  // Sort chronologically
+  entries.sort((a, b) => {
+    const aParsed = parseMonthYear(a.monthYear);
+    const bParsed = parseMonthYear(b.monthYear);
+    if (aParsed.year === bParsed.year) {
+      return aParsed.monthIndex - bParsed.monthIndex;
+    }
+    return aParsed.year - bParsed.year;
+  });
+
+  return entries.map(x => ({ ...x, monthYear: x.monthYear.substring(0, 3)}));
+}
