@@ -8,6 +8,7 @@
   - [ ] Monthly averages
 - [ ] Display ties correctly
 - [ ] Make it look good
+- [ ] Make it look good on mobile
 - [ ] Improve usability instructions
 - [ ] Make it shareable
 - [ ] Make it save-able
