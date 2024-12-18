@@ -19,28 +19,50 @@ fi
 echo "Website content downloaded to $TEMP_HTML"
 
 # Extract Wordle data using pup
-# Example extraction: Look for elements that typically contain the Wordle answers in a table or list
 echo "Extracting Wordle answers..."
 pup 'table td text{}' < "$TEMP_HTML" > extracted_data.txt
 
 OUT=puzzles.txt
 
-# Post-process the extracted data (if necessary)
+# Post-process the extracted data
 echo "Post-processing extracted data..."
 awk 'NR%3==1 {date=$0} NR%3==2 {puzzle=$0} NR%3==0 {answer=$0; print date, puzzle, answer}' extracted_data.txt > $OUT
 
+# Remove empty lines and trim whitespace
 sed -i '' '/^[[:space:]]*$/d' $OUT
-awk '{gsub(/^[ \t]+|[ \t]+$/, ""); print}' $OUT > $OUT.tmp && mv $OUT.tmp $OUT 
+awk '{gsub(/^[ \t]+|[ \t]+$/, ""); print}' $OUT > $OUT.tmp && mv $OUT.tmp $OUT
 paste -d ',' - - - < $OUT > $OUT.tmp && mv $OUT.tmp $OUT
 
-echo "Cleaned Wordle answers saved to $OUT"
+# Add years to the dates
+echo "Adding years to dates..."
+CURRENT_YEAR=$(date +%Y)
+
+awk -F',' -v year="$CURRENT_YEAR" '
+BEGIN {
+    # Initialize a counter to track occurrences of each date
+    split("", date_count);
+}
+{
+    # Increment the count for the current date
+    date = $1;
+    date_count[date]++;
+
+    # Calculate the year based on the occurrence count
+    calculated_year = year - (date_count[date] - 1);
+
+    # Append the year to the date
+    $1 = date " " calculated_year;
+
+    # Print the updated line
+    print $1 "," $2 "," $3;
+}' $OUT > $OUT.tmp && mv $OUT.tmp $OUT
+
+echo "Cleaned Wordle answers with years saved to $OUT"
 
 # Cleanup
 rm "$TEMP_HTML" extracted_data.txt
 
 echo "Temporary files cleaned up. Done!"
-
-
 
 # Input CSV file
 INPUT_CSV=$OUT
