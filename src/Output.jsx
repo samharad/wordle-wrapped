@@ -22,7 +22,21 @@ import Carousel from "react-multi-carousel";
 import 'react-multi-carousel/lib/styles.css';
 
 const dRank = (rank, tieN) => {
-  return `${rank}${tieN? "t" : ""})`;
+  if (rank === 1) {
+    return "🏆";
+  } else if (rank === 2) {
+    return "🏅";
+  } else if (rank === 3) {
+    return "🍪";
+  } else if (rank === 4) {
+    return "🍎";
+  } else if (rank === 5) {
+    return "🦴";
+  } else if (rank === 6) {
+    return "💨";
+  } else if (rank === 7) {
+    return "💩";
+  }
 }
 
 const responsive = {
@@ -99,7 +113,7 @@ export default function Output({ width, histDerived }) {
 
   return (
     <div className={"flex flex-col justify-center h-full"}>
-      <div className={"h-full"}>
+      <div className={"h-full text-xl"}>
 
         <Carousel
           additionalTransfrom={0}
@@ -134,12 +148,17 @@ export default function Output({ width, histDerived }) {
 
           <div className={"border rounded bg-white text-dark-green" + commonClass}>
             <div className="text-2xl font-bold">🌟 Average Score</div>
+            <hr className={"w-2/3 m-auto"}/>
             <div>
-              {averages.map(([person, avg, rank, tieN], i) =>
-                <div key={i}>
-                  {dRank(rank, tieN)} {person} {avg}
-                </div>
-              )}
+              <table className={"table-auto m-auto"}>
+                {averages.map(([person, avg, rank, tieN], i) =>
+                  <tr className={""}>
+                    <td className={"p-1"}>{dRank(rank, tieN)}</td>
+                    <td className={"p-1"}>{person}</td>
+                    <td className={"p-1"}>{avg}</td>
+                  </tr>
+                )}
+              </table>
             </div>
           </div>
 
