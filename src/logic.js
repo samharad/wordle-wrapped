@@ -108,51 +108,60 @@ export function parseWordleHistory(text) {
   let currentPerson = null;
   let currentWordle = null;
 
-  const wordleRegex = /^Wordle\s+(\d[\d,]*)\s+([\dX])\/6$/;
+  // Matches "Wordle 927 X/6" or "Wordle 1234 4/6"
+  // Group 1: puzzle number (with possible commas)
+  // Group 2: attempts (could be a number or 'X')
+  const wordleRegex = /^Wordle\s+(\d[\d,]*)\s+([X\d])\/6$/;
+
+  // Function to finalize currentWordle if it exists
+  function finalizeWordle() {
+    if (currentWordle && currentWordle.guesses.length > 0) {
+      data.push(currentWordle);
+    }
+    currentWordle = null;
+  }
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
-    // Detect a person's name (ends with a colon)
+    // Detect person line
     if (line.endsWith(':')) {
+      // If we're starting a new person, finalize any existing wordle
+      finalizeWordle();
       currentPerson = line.slice(0, -1);
       continue;
     }
 
-    // Detect a Wordle header line
     const match = line.match(wordleRegex);
     if (match && currentPerson) {
-      // If there's a current unfinished wordle, finalize it first
-      if (currentWordle && currentWordle.guesses.length > 0) {
-        data.push(currentWordle);
-      }
-      // Start a new wordle
+      // Starting a new Wordle game
+      finalizeWordle();
+
       const number = parseInt(match[1].replace(/,/g, ''), 10);
-      const attempts = parseInt(match[2], 10);
-      currentWordle = {
-        person: currentPerson,
-        number,
-        attempts: isNaN(attempts) ? null : attempts,
-        guesses: [] };
+      const attemptsStr = match[2];
+      const attempts = attemptsStr === 'X' ? null : parseInt(attemptsStr, 10);
+
+      currentWordle = { person: currentPerson, number, attempts, guesses: [] };
       continue;
     }
 
-    // If we are currently tracking a Wordle game and this line looks like a guess line
-    if (currentWordle && line && !line.endsWith(':') && /[⬜🟩🟨🟦🟪]/.test(line)) {
-      currentWordle.guesses.push(line);
-    } else if (currentWordle && line && !line.startsWith('Wordle')) {
-      // We've moved on from this Wordle to another game or unrelated line
-      if (currentWordle.guesses.length > 0) {
-        data.push(currentWordle);
+    // If we are currently in a Wordle block, try to parse guess lines.
+    if (currentWordle) {
+      // Guess lines contain Wordle squares: ⬜🟨🟩 etc.
+      // We'll consider a guess line any line that has these chars and is not empty.
+      if (/[⬜🟩🟨🟦🟪]/.test(line)) {
+        currentWordle.guesses.push(line);
+      } else if (line !== '' && !line.startsWith('Wordle')) {
+        // We hit a line that doesn't look like a guess or new Wordle line,
+        // meaning the Wordle block is ended by some unrelated text.
+        finalizeWordle();
+        // We do not start a new Wordle here; we just end.
       }
-      currentWordle = null;
     }
   }
 
-  // If there's a leftover Wordle at the end
-  if (currentWordle && currentWordle.guesses.length > 0) {
-    data.push(currentWordle);
-  }
+  // End of input, finalize if still in a wordle
+  finalizeWordle();
 
   return data;
 }
