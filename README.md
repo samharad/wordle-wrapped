@@ -7,16 +7,16 @@
   - [x] Day-of-week averages
   - [ ] Day-of-week participation trend
   - [ ] Year-long participation trend
-- [x] Display ties correctly
 - [ ] Make it look good
 - [ ] Make it look good on mobile
 - [ ] Improve usability instructions
 - [ ] Make it shareable
 - [ ] Make it save-able
-- [ ] Acquire domain
 - [ ] Deploy
-- [x] Move Participants to review screen
 - [ ] Show placeholder data when nothing is pasted
-- [x] Add year to puzzle data
-- [ ] Fix this bug with extra emoji content
 - [ ] Favicon
+- [x] Display ties correctly
+- [x] Acquire domain
+- [x] Move Participants to review screen
+- [x] Add year to puzzle data
+- [x] Fix this bug with extra emoji content
