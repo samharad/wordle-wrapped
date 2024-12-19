@@ -662,5 +662,9 @@ export function calculateAverageScoreByDayOfWeek(data) {
 }
 
 export function restructureDailyAvgs(data) {
-  return Object.entries(data).map(([day, n]) => ({ day, n }));
+  const dayOrder = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  return Object.entries(data)
+    .map(([day, n]) => ({ day, n }))
+    .sort((a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day));
 }

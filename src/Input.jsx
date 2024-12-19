@@ -1,4 +1,3 @@
-import {parseWordleHistory} from "./logic.js";
 import {Link} from "react-router";
 
 export default function Input({ rawHist, setRawHist }) {

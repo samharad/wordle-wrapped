@@ -234,34 +234,38 @@ export default function Output({ width, histDerived }) {
               </div>
             </div>}
 
-          {/*<div className={"border rounded bg-white text-dark-green" + commonClass}>*/}
-          {/*  <div className="text-2xl font-bold">📈 Monthly Trends</div>*/}
-          {/*  <LineChart width={chartWidth} height={chartWidth} data={restructureMonthlyAverages(monthlyAverages)}>*/}
-          {/*    <Legend verticalAlign="top" height={36}/>*/}
-          {/*    <Tooltip/>*/}
-          {/*    <XAxis dataKey="monthYear"/>*/}
-          {/*    <YAxis domain={[1, 7]}/>*/}
-          {/*    <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>*/}
-          {/*    {Object.keys(monthlyAverages).map((k, i) =>*/}
-          {/*      <Line type="linear" dataKey={k} stroke={getHexColor(i)}/>*/}
-          {/*    )}*/}
-          {/*  </LineChart>*/}
-          {/*  <div>*/}
-          {/*  </div>*/}
-          {/*</div>*/}
+          <div className={"border rounded bg-white text-dark-green" + commonClass}>
+            <div className="text-2xl font-bold">📈 Monthly Trends</div>
+            <div className={"flex justify-center"}>
+              <LineChart width={chartWidth} height={chartWidth} data={restructureMonthlyAverages(monthlyAverages)}>
+                <Legend verticalAlign="top" height={36}/>
+                <Tooltip/>
+                <XAxis dataKey="monthYear"/>
+                <YAxis domain={[1, 7]}/>
+                <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
+                {Object.keys(monthlyAverages).map((k, i) =>
+                  <Line type="linear" dataKey={k} stroke={getHexColor(i)}/>
+                )}
+              </LineChart>
+            </div>
+            <div>
+            </div>
+          </div>
 
-          {/*<div className={"border rounded bg-white text-dark-green" + commonClass}>*/}
-          {/*  <div className="text-2xl font-bold">📊 Daily Averages</div>*/}
-          {/*  <BarChart width={chartWidth} height={chartWidth} data={restructureDailyAvgs(dailyAverages)}>*/}
-          {/*    <CartesianGrid strokeDasharray="3 3"/>*/}
-          {/*    <XAxis dataKey="day"/>*/}
-          {/*    <YAxis domain={[1, 7]}/>*/}
-          {/*    <Tooltip/>*/}
-          {/*    <Bar dataKey="n" fill="#8884d8"/>*/}
-          {/*  </BarChart>*/}
-          {/*  <div>*/}
-          {/*  </div>*/}
-          {/*</div>*/}
+          <div className={"border rounded bg-white text-dark-green" + commonClass}>
+            <div className="text-2xl font-bold">📊 Daily Averages</div>
+            <div className={"flex justify-center"}>
+              <BarChart width={chartWidth} height={chartWidth} data={restructureDailyAvgs(dailyAverages)}>
+                <CartesianGrid strokeDasharray="3 3"/>
+                <XAxis dataKey="day"/>
+                <YAxis domain={[1, 7]}/>
+                <Tooltip/>
+                <Bar dataKey="n" fill="#8884d8"/>
+              </BarChart>
+            </div>
+            <div>
+            </div>
+          </div>
 
         </Carousel>
 

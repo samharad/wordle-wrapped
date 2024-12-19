@@ -198,6 +198,44 @@ describe('calculateNumFailures', () => {
 });
 
 describe('parseWordleHistory', () => {
+  test('emoji edge case', () => {
+    const s = `    
+Mom:
+\tWordle 927 X/6
+
+⬜🟨⬜⬜⬜
+🟩⬜🟩🟩⬜
+🟩⬜🟩🟩🟩
+🟩⬜🟩🟩🟩
+🟩⬜🟩🟩🟩
+🟩⬜🟩🟩🟩
+
+Tess:
+\t😬
+
+Mom:
+\tI know!
+\tConnections 
+Puzzle #205
+🟨🟨🟨🟨
+🟩🟩🟩🟩
+🟦🟦🟦🟦
+🟪🟪🟪🟪
+
+    `;
+    expect(parseWordleHistory(s)).toEqual([
+      {person: 'Mom',
+        number: 927,
+        attempts: null,
+        guesses: [
+          "⬜🟨⬜⬜⬜",
+          "🟩⬜🟩🟩⬜",
+          "🟩⬜🟩🟩🟩",
+          "🟩⬜🟩🟩🟩",
+          "🟩⬜🟩🟩🟩",
+          "🟩⬜🟩🟩🟩"]},
+    ]);
+  });
   test('handle unsuccessful games', () => {
     const s = `
 Pauline:
