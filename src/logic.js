@@ -149,8 +149,8 @@ export function parseWordleHistory(text) {
     if (currentWordle) {
       // Guess lines contain Wordle squares: ⬜🟨🟩 etc.
       // We'll consider a guess line any line that has these chars and is not empty.
-      if (/[⬜🟩🟨🟦🟪]/.test(line)) {
-        currentWordle.guesses.push(line);
+      if (/[⬜🟩🟨⬛️]/.test(line)) {
+        currentWordle.guesses.push(line.match(/[⬜🟩🟨⬛️]/g)?.join(''));
       } else if (line !== '' && !line.startsWith('Wordle')) {
         // We hit a line that doesn't look like a guess or new Wordle line,
         // meaning the Wordle block is ended by some unrelated text.
@@ -162,6 +162,14 @@ export function parseWordleHistory(text) {
 
   // End of input, finalize if still in a wordle
   finalizeWordle();
+
+  for (const { guesses } of data) {
+    for (const guessLine of guesses) {
+      if (guessLine.replace(/[⬜🟩🟨⬛]/g, '').length !== 0) {
+        throw "Invalid characters in guess" + guessLine.replace(/[⬜🟩🟨⬛]/g, '');
+      }
+    }
+  }
 
   return data;
 }
