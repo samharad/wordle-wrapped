@@ -34,7 +34,7 @@ const dRank = (rank, tieN) => {
     return "🦴";
   } else if (rank === 6) {
     return "💨";
-  } else if (rank === 7) {
+  } else {
     return "💩";
   }
 }
@@ -111,9 +111,23 @@ export default function Output({ width, histDerived }) {
     );
   };
 
+  const Card = ({ title, children }) => (
+    <div className={"border rounded bg-white text-dark-green" + commonClass}>
+      <div className="text-4xl font-bold">{title}</div>
+      <div className={"flex items-center"}>
+        <hr align="center" className={"w-2/3 m-auto my-2"}/>
+      </div>
+      <div>
+        {children}
+      </div>
+    </div>
+  );
+
+  const dPct = x => `${Math.round(x * 100)}%`;
+
   return (
     <div className={"flex flex-col justify-center h-full"}>
-      <div className={"h-full text-xl"}>
+      <div className={"h-full text-2xl"}>
 
         <Carousel
           additionalTransfrom={0}
@@ -122,7 +136,7 @@ export default function Output({ width, histDerived }) {
           centerMode={false}
           className="h-full"
           containerClass="container-with-dots"
-          customDot={<CustomDot />}
+          customDot={<CustomDot/>}
           dotListClass=""
           draggable={false}
           focusOnSelect={false}
@@ -146,57 +160,56 @@ export default function Output({ width, histDerived }) {
           swipeable
         >
 
-          <div className={"border rounded bg-white text-dark-green" + commonClass}>
-            <div className="text-2xl font-bold">🌟 Average Score</div>
-            <hr className={"w-2/3 m-auto"}/>
-            <div>
-              <table className={"table-auto m-auto"}>
-                {averages.map(([person, avg, rank, tieN], i) =>
-                  <tr className={""}>
-                    <td className={"p-1"}>{dRank(rank, tieN)}</td>
-                    <td className={"p-1"}>{person}</td>
-                    <td className={"p-1"}>{avg}</td>
-                  </tr>
-                )}
-              </table>
-            </div>
-          </div>
+          <Card title="🌟 Average Score">
+            <table className={"table-auto m-auto"}>
+              {averages.map(([person, avg, rank, tieN], i) =>
+                <tr key={i}>
+                  <td className={"p-1 px-5 text-left"}>{dRank(rank, tieN)}</td>
+                  <td className={"p-1 px-5 text-left"}>{person}</td>
+                  <td className={"p-1 px-5 text-left"}>{avg}</td>
+                </tr>
+              )}
+            </table>
+          </Card>
 
-          <div className={"border rounded bg-white text-dark-green" + commonClass}>
-            <div className="text-2xl font-bold">💩 Failures</div>
-            <div>
+          <Card title={"💩 Failures"}>
+            <table className={"table-auto m-auto"}>
               {failures.map(([person, n, rank, tieN], i) =>
-                <div key={i}>
-                  {dRank(rank, tieN)} {person} {n}
-                </div>
+                <tr key={i}>
+                  <td className={"p-1 px-5 text-left"}>{dRank(rank, tieN)}</td>
+                  <td className={"p-1 px-5 text-left"}>{person}</td>
+                  <td className={"p-1 px-5 text-left"}>{n}</td>
+                </tr>
               )}
-            </div>
-          </div>
+            </table>
+          </Card>
 
-          <div className={"border rounded bg-white text-dark-green" + commonClass}>
-            <div className="text-2xl font-bold">💫 Longest Streak</div>
-            <div>
+          <Card title={"💫 Longest Streak (days)"}>
+            <table className={"table-auto m-auto"}>
               {streaks.map(([person, {n, days}, rank, tieN], i) =>
-                <div key={i}>
-                  {dRank(rank, tieN)} {person} {n} {n > 1 && "(puzzles " + days[0] + " - " + days[1] + ")"}
-                </div>
+                <tr key={i}>
+                  <td className={"p-1 px-5 text-left"}>{dRank(rank, tieN)}</td>
+                  <td className={"p-1 px-5 text-left"}>{person}</td>
+                  <td className={"p-1 px-5 text-left"}>{n}</td>
+                  {/*<td className={"p-1 px-5 text-left text-sm"}>{n > 1 && "(#" + days[0] + " - " + days[1] + ")"}</td>*/}
+                </tr>
               )}
-            </div>
-          </div>
+            </table>
+          </Card>
 
-          <div className={"border rounded bg-white text-dark-green" + commonClass}>
-            <div className="text-2xl font-bold">🏅 Participation Rate</div>
-            <div>
+          <Card title={"👋 Participation Rate"}>
+            <table className={"table-auto m-auto"}>
               {participationRates.map(([person, r, rank, tieN], i) =>
-                <div key={i}>
-                  {dRank(rank, tieN)} {person} {r}
-                </div>
+                <tr key={i}>
+                  <td className={"p-1 px-5 text-left"}>{dRank(rank, tieN)}</td>
+                  <td className={"p-1 px-5 text-left"}>{person}</td>
+                  <td className={"p-1 px-5 text-left"}>{dPct(r)}</td>
+                </tr>
               )}
-            </div>
-          </div>
+            </table>
+          </Card>
 
-          <div className={"border rounded bg-white text-dark-green" + commonClass}>
-            <div className="text-2xl font-bold">😭 Hardest Puzzle (scores)</div>
+          <Card title={"😭 Hardest Puzzle (scores)"}>
             <div>
               {`${hardestPuzzle.number}, ${hardestPuzzle.date}: ${hardestPuzzle.word}`}
               <div className={"flex flex-wrap justify-center"}>
@@ -212,30 +225,28 @@ export default function Output({ width, histDerived }) {
                 )}
               </div>
             </div>
-          </div>
+          </Card>
 
-          <div className={"border rounded bg-white text-dark-green" + commonClass}>
-            <div className="text-2xl font-bold">😢 Hardest Puzzle (most fails)</div>
+          <Card title={"😢 Hardest Puzzle (most fails)"}>
             <div>
               {`${mostFailedPuzzle.number}, ${mostFailedPuzzle.date}: ${mostFailedPuzzle.word}`}
               <div className={"flex flex-wrap justify-center"}>
-              {oToA(mostFailedData.guesses).map(([person, guesses], i) =>
-                <div key={i} className={"mx-3"}>
-                  <div className={"truncate max-w-24"}>
-                    {person}
+                {oToA(mostFailedData.guesses).map(([person, guesses], i) =>
+                  <div key={i} className={"mx-3"}>
+                    <div className={"truncate max-w-24"}>
+                      {person}
+                    </div>
+                    <div className="m-0 p-0 leading-none whitespace-pre">
+                      {guesses.join("\n")}
+                    </div>
                   </div>
-                  <div className="m-0 p-0 leading-none whitespace-pre">
-                    {guesses.join("\n")}
-                  </div>
-                </div>
-              )}
+                )}
               </div>
             </div>
-          </div>
+          </Card>
 
           {easiestAllPlayData &&
-            <div className={"border rounded bg-white text-dark-green" + commonClass}>
-              <div className="text-2xl font-bold">🍰 Easiest All-Play</div>
+            <Card title={"🍰 Easiest All-Play"}>
               <div>
                 {`${easiestAllPlayPuzzle.number}, ${easiestAllPlayPuzzle.date}: ${easiestAllPlayPuzzle.word}`}
                 <div className={"flex flex-wrap justify-center"}>
@@ -251,11 +262,10 @@ export default function Output({ width, histDerived }) {
                   )}
                 </div>
               </div>
-            </div>}
+            </Card>}
 
-          <div className={"border rounded bg-white text-dark-green" + commonClass}>
-            <div className="text-2xl font-bold">📈 Monthly Trends</div>
-            <div className={"flex justify-center"}>
+          <Card title={"📈 Monthly Trends"}>
+            <div className={"flex justify-center text-lg"}>
               <LineChart width={chartWidth} height={chartWidth} data={restructureMonthlyAverages(monthlyAverages)}>
                 <Legend verticalAlign="top" height={36}/>
                 <Tooltip/>
@@ -263,17 +273,13 @@ export default function Output({ width, histDerived }) {
                 <YAxis domain={[1, 7]}/>
                 <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
                 {Object.keys(monthlyAverages).map((k, i) =>
-                  <Line type="linear" dataKey={k} stroke={getHexColor(i)}/>
-                )}
+                  <Line type="linear" dataKey={k} stroke={getHexColor(i)}/>)}
               </LineChart>
             </div>
-            <div>
-            </div>
-          </div>
+          </Card>
 
-          <div className={"border rounded bg-white text-dark-green" + commonClass}>
-            <div className="text-2xl font-bold">📊 Daily Averages</div>
-            <div className={"flex justify-center"}>
+          <Card title={"📊 Daily Averages"}>
+            <div className={"flex justify-center text-lg"}>
               <BarChart width={chartWidth} height={chartWidth} data={restructureDailyAvgs(dailyAverages)}>
                 <CartesianGrid strokeDasharray="3 3"/>
                 <XAxis dataKey="day"/>
@@ -282,9 +288,7 @@ export default function Output({ width, histDerived }) {
                 <Bar dataKey="n" fill="#8884d8"/>
               </BarChart>
             </div>
-            <div>
-            </div>
-          </div>
+          </Card>
 
         </Carousel>
 

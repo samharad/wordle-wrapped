@@ -15,6 +15,7 @@
 - [ ] Deploy
 - [ ] Show placeholder data when nothing is pasted
 - [ ] Favicon
+- [ ] Test with long names
 - [x] Display ties correctly
 - [x] Acquire domain
 - [x] Move Participants to review screen
