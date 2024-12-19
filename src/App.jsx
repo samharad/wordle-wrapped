@@ -31,7 +31,10 @@ function App() {
 
   return (
     <>
-      <div className="margin-auto max-w-lg mx-auto text-center">
+      <div
+        className={"text-center h-full"}
+        // className="margin-auto max-w-lg mx-auto text-center"
+      >
         <Routes>
           <Route path="/" element={<Home />}/>
           <Route path="/input" element={<Input rawHist={rawHist} setRawHist={setRawHist} />} />

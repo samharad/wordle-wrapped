@@ -18,10 +18,39 @@ import {
   restructureMonthlyAverages, roundingVals, withRankings
 } from "./logic.js";
 import {Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
+import Carousel from "react-multi-carousel";
+import 'react-multi-carousel/lib/styles.css';
 
 const dRank = (rank, tieN) => {
   return `${rank}${tieN? "t" : ""})`;
 }
+
+const responsive = {
+  desktop: {
+    breakpoint: {
+      max: 3000,
+      min: 1024
+    },
+    items: 1,
+    partialVisibilityGutter: 200
+  },
+  mobile: {
+    breakpoint: {
+      max: 464,
+      min: 0
+    },
+    items: 1,
+    partialVisibilityGutter: 0
+  },
+  tablet: {
+    breakpoint: {
+      max: 1024,
+      min: 464
+    },
+    items: 1,
+    partialVisibilityGutter: 0
+  }
+};
 
 export default function Output({ width, histDerived }) {
   if (histDerived.length === 0) {
@@ -47,13 +76,64 @@ export default function Output({ width, histDerived }) {
   const monthlyAverages = calculateMonthlyAverages(histDerived);
   const dailyAverages = calculateAverageScoreByDayOfWeek(histDerived);
 
-  return (
-    <>
-      <ol>
+  const commonClass =
+   // "max-w-80";
+   //  "";
+    " md:mx-40 py-3 px-2";
 
-        <li>
-          <div className="border rounded bg-white text-dark-green">
-            <div className="text-2xl font-bold">⭐️ Average Score</div>
+  const CustomDot = ({ onClick, index, active }) => {
+    return (
+      <button
+        onClick={onClick}
+        style={{
+          margin: "5px",
+          cursor: "pointer",
+          transition: "background-color 0.3s ease",
+          scale: active ? "1.4" : "1"
+        }}
+      >
+        ⭐️
+      </button>
+    );
+  };
+
+  return (
+    <div className={"flex flex-col justify-center h-full"}>
+      <div className={"h-full"}>
+
+        <Carousel
+          additionalTransfrom={0}
+          arrows={width > 650}
+          autoPlaySpeed={3000}
+          centerMode={false}
+          className="h-full"
+          containerClass="container-with-dots"
+          customDot={<CustomDot />}
+          dotListClass=""
+          draggable={false}
+          focusOnSelect={false}
+          infinite
+          itemClass=""
+          keyBoardControl
+          minimumTouchDrag={80}
+          partialVisible={false}
+          pauseOnHover
+          renderArrowsWhenDisabled={false}
+          renderButtonGroupOutside={false}
+          renderDotsOutside={false}
+          responsive={responsive}
+          rewind={false}
+          rewindWithAnimation={false}
+          rtl={false}
+          shouldResetAutoplay
+          showDots={true}
+          sliderClass=""
+          slidesToSlide={1}
+          swipeable
+        >
+
+          <div className={"border rounded bg-white text-dark-green" + commonClass}>
+            <div className="text-2xl font-bold">🌟 Average Score</div>
             <div>
               {averages.map(([person, avg, rank, tieN], i) =>
                 <div key={i}>
@@ -62,10 +142,8 @@ export default function Output({ width, histDerived }) {
               )}
             </div>
           </div>
-        </li>
 
-        <li>
-          <div className="border rounded bg-white text-dark-green">
+          <div className={"border rounded bg-white text-dark-green" + commonClass}>
             <div className="text-2xl font-bold">💩 Failures</div>
             <div>
               {failures.map(([person, n, rank, tieN], i) =>
@@ -75,10 +153,8 @@ export default function Output({ width, histDerived }) {
               )}
             </div>
           </div>
-        </li>
 
-        <li>
-          <div className="border rounded bg-white text-dark-green">
+          <div className={"border rounded bg-white text-dark-green" + commonClass}>
             <div className="text-2xl font-bold">💫 Longest Streak</div>
             <div>
               {streaks.map(([person, {n, days}, rank, tieN], i) =>
@@ -88,10 +164,8 @@ export default function Output({ width, histDerived }) {
               )}
             </div>
           </div>
-        </li>
 
-        <li>
-          <div className="border rounded bg-white text-dark-green">
+          <div className={"border rounded bg-white text-dark-green" + commonClass}>
             <div className="text-2xl font-bold">🏅 Participation Rate</div>
             <div>
               {participationRates.map(([person, r, rank, tieN], i) =>
@@ -101,110 +175,97 @@ export default function Output({ width, histDerived }) {
               )}
             </div>
           </div>
-        </li>
 
-        <li>
-          <div className="border rounded bg-white text-dark-green">
+          <div className={"border rounded bg-white text-dark-green" + commonClass}>
             <div className="text-2xl font-bold">😭 Hardest Puzzle (scores)</div>
             <div>
               {`${hardestPuzzle.number}, ${hardestPuzzle.date}: ${hardestPuzzle.word}`}
-              {oToA(hardestData.guesses).map(([person, guesses], i) =>
-                <div key={i}>
-                  <div>
-                    {person}
-                  </div>
-                  <div className="m-0 p-0 leading-none">
-                    {guesses.map((line, j) =>
-                      <p key={j}>
-                        {line}
-                      </p>)}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </li>
-
-        <li>
-          <div className="border rounded bg-white text-dark-green">
-            <div className="text-2xl font-bold">😢 Hardest Puzzle (most fails)</div>
-            <div>
-              {`${mostFailedPuzzle.number}, ${mostFailedPuzzle.date}: ${mostFailedPuzzle.word}`}
-              {oToA(mostFailedData.guesses).map(([person, guesses], i) =>
-                <div key={i}>
-                  <div>
-                    {person}
-                  </div>
-                  <div className="m-0 p-0 leading-none">
-                    {guesses.map((line, j) =>
-                      <p key={j}>
-                        {line}
-                      </p>)}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </li>
-
-        {easiestAllPlayData &&
-          <li>
-            <div className="border rounded bg-white text-dark-green">
-              <div className="text-2xl font-bold">🍰 Easiest All-Play</div>
-              <div>
-                {`${easiestAllPlayPuzzle.number}, ${easiestAllPlayPuzzle.date}: ${easiestAllPlayPuzzle.word}`}
-                {oToA(easiestAllPlayData.guesses).map(([person, guesses], i) =>
-                  <div key={i}>
-                    <div>
+              <div className={"flex flex-wrap justify-center"}>
+                {oToA(hardestData.guesses).map(([person, guesses], i) =>
+                  <div key={i} className={"mx-3"}>
+                    <div className={"truncate"}>
                       {person}
                     </div>
-                    <div className="m-0 p-0 leading-none">
-                      {guesses.map((line, j) =>
-                        <p key={j}>
-                          {line}
-                        </p>)}
+                    <div className="m-0 p-0 leading-none whitespace-pre">
+                      {guesses.join("\n")}
                     </div>
                   </div>
                 )}
               </div>
             </div>
-          </li>}
+          </div>
 
-
-        <li>
-          <div className="border rounded bg-white text-dark-green">
-            <div className="text-2xl font-bold">📈 Monthly Trends</div>
-            <LineChart width={chartWidth} height={chartWidth} data={restructureMonthlyAverages(monthlyAverages)}>
-              <Legend verticalAlign="top" height={36}/>
-              <Tooltip />
-              <XAxis dataKey="monthYear"/>
-              <YAxis domain={[1, 7]}/>
-              <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
-              {Object.keys(monthlyAverages).map((k, i) =>
-                <Line type="linear" dataKey={k} stroke={getHexColor(i)} />
+          <div className={"border rounded bg-white text-dark-green" + commonClass}>
+            <div className="text-2xl font-bold">😢 Hardest Puzzle (most fails)</div>
+            <div>
+              {`${mostFailedPuzzle.number}, ${mostFailedPuzzle.date}: ${mostFailedPuzzle.word}`}
+              <div className={"flex flex-wrap justify-center"}>
+              {oToA(mostFailedData.guesses).map(([person, guesses], i) =>
+                <div key={i} className={"mx-3"}>
+                  <div className={"truncate max-w-24"}>
+                    {person}
+                  </div>
+                  <div className="m-0 p-0 leading-none whitespace-pre">
+                    {guesses.join("\n")}
+                  </div>
+                </div>
               )}
-            </LineChart>
-            <div>
+              </div>
             </div>
           </div>
-        </li>
 
-        <li>
-          <div className="border rounded bg-white text-dark-green">
-            <div className="text-2xl font-bold">📊 Daily Averages</div>
-            <BarChart width={chartWidth} height={chartWidth} data={restructureDailyAvgs(dailyAverages)}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
-              <YAxis domain={[1, 7]} />
-              <Tooltip />
-              <Bar dataKey="n" fill="#8884d8" />
-            </BarChart>
-            <div>
-            </div>
-          </div>
-        </li>
+          {easiestAllPlayData &&
+            <div className={"border rounded bg-white text-dark-green" + commonClass}>
+              <div className="text-2xl font-bold">🍰 Easiest All-Play</div>
+              <div>
+                {`${easiestAllPlayPuzzle.number}, ${easiestAllPlayPuzzle.date}: ${easiestAllPlayPuzzle.word}`}
+                <div className={"flex flex-wrap justify-center"}>
+                  {oToA(easiestAllPlayData.guesses).map(([person, guesses], i) =>
+                    <div key={i} className={"mx-3"}>
+                      <div className={"truncate"}>
+                        {person}
+                      </div>
+                      <div className="m-0 p-0 leading-none whitespace-pre">
+                        {guesses.join("\n")}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>}
 
-      </ol>
-    </>
+          {/*<div className={"border rounded bg-white text-dark-green" + commonClass}>*/}
+          {/*  <div className="text-2xl font-bold">📈 Monthly Trends</div>*/}
+          {/*  <LineChart width={chartWidth} height={chartWidth} data={restructureMonthlyAverages(monthlyAverages)}>*/}
+          {/*    <Legend verticalAlign="top" height={36}/>*/}
+          {/*    <Tooltip/>*/}
+          {/*    <XAxis dataKey="monthYear"/>*/}
+          {/*    <YAxis domain={[1, 7]}/>*/}
+          {/*    <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>*/}
+          {/*    {Object.keys(monthlyAverages).map((k, i) =>*/}
+          {/*      <Line type="linear" dataKey={k} stroke={getHexColor(i)}/>*/}
+          {/*    )}*/}
+          {/*  </LineChart>*/}
+          {/*  <div>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
+
+          {/*<div className={"border rounded bg-white text-dark-green" + commonClass}>*/}
+          {/*  <div className="text-2xl font-bold">📊 Daily Averages</div>*/}
+          {/*  <BarChart width={chartWidth} height={chartWidth} data={restructureDailyAvgs(dailyAverages)}>*/}
+          {/*    <CartesianGrid strokeDasharray="3 3"/>*/}
+          {/*    <XAxis dataKey="day"/>*/}
+          {/*    <YAxis domain={[1, 7]}/>*/}
+          {/*    <Tooltip/>*/}
+          {/*    <Bar dataKey="n" fill="#8884d8"/>*/}
+          {/*  </BarChart>*/}
+          {/*  <div>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
+
+        </Carousel>
+
+      </div>
+    </div>
   );
 }

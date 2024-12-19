@@ -5,3 +5,61 @@
 * {
     font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 }
+
+.react-multi-carousel-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+html, body {
+    height: 100%; /* Ensure they fill the full height of the viewport */
+    margin: 0;    /* Remove default margin */
+    padding: 0;   /* Remove default padding */
+    box-sizing: border-box; /* Include padding and border in height calculations */
+}
+
+.react-multiple-carousel__arrow--right::before {
+    content: "🎄" !important; /* Christmas tree emoji for right arrow */
+    transform: rotate(90deg); /* Point right */
+    display: inline-block;
+    font-size: 1.5rem; /* Adjust size as needed */
+    scale: 4;
+    background: none !important;
+    opacity: 0.8 !important;
+}
+
+.react-multiple-carousel__arrow--left::before {
+    content: "🎄" !important; /* Christmas tree emoji for left arrow */
+    transform: rotate(-90deg); /* Point left */
+    display: inline-block;
+    font-size: 1.5rem; /* Adjust size as needed */
+    scale: 4;
+    background: none !important;
+    opacity: 0.8 !important;
+}
+
+.react-multiple-carousel__arrow,
+.react-multiple-carousel__arrow--left,
+.react-multiple-carousel__arrow--right
+{
+    background: none !important;
+    opacity: 0.8 !important;
+}
+
+.react-multiple-carousel__arrow:hover {
+    background: none !important;
+}
+
+.react-multiple-carousel__arrow--right {
+    background: none !important;
+}
+
+.react-multiple-carousel__arrow--left {
+    background: none !important;
+}
+
+.react-multiple-carousel__arrow--right:hover,
+.react-multiple-carousel__arrow--left:hover {
+    transform: scale(1.2); /* Increase size by 20% */
+}
