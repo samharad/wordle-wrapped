@@ -1,13 +1,11 @@
 import {parseWordleHistory} from "./logic.js";
 import {Link} from "react-router";
 
-export default function Input({ hist, setHist }) {
+export default function Input({ rawHist, setRawHist }) {
 
 
-  function handleSubmit() {
-    const input = document.getElementById('chat').value;
-    const hist = parseWordleHistory(input);
-    setHist(hist);
+  function handleSubmit(e) {
+    setRawHist(e.target.value);
   }
 
   return (
@@ -21,6 +19,7 @@ export default function Input({ hist, setHist }) {
             <div>
                 <textarea id="chat"
                           className="bg-white text-dark-green p-2 rounded"
+                          value={rawHist}
                           onChange={handleSubmit}>
                 </textarea>
             </div>
@@ -37,7 +36,7 @@ export default function Input({ hist, setHist }) {
 
           <li className="my-3">
             <button className="bg-white text-red hover:bg-red hover:text-white font-bold px-4 rounded">
-              <Link to="/output">Continue</Link>
+              <Link to="/input-review">Continue</Link>
             </button>
 
           </li>

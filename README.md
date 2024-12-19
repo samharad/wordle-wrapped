@@ -7,7 +7,7 @@
   - [x] Day-of-week averages
   - [ ] Day-of-week participation trend
   - [ ] Year-long participation trend
-- [ ] Display ties correctly
+- [x] Display ties correctly
 - [ ] Make it look good
 - [ ] Make it look good on mobile
 - [ ] Improve usability instructions

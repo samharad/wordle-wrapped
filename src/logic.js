@@ -15,6 +15,70 @@ export function byValsDescending(x) {
   return oToA(x).sort(([k1, v1], [k2, v2]) => v2 - v1);
 }
 
+export function roundingVals(obj, n) {
+  const result = {};
+  for (const key in obj) {
+    if (typeof obj[key] === 'number') {
+      result[key] = Number(obj[key].toFixed(n));
+    } else {
+      // If it's not a number, just copy as is
+      result[key] = obj[key];
+    }
+  }
+  return result;
+}
+
+export function withRankings(tuples, scoreF = (x) => x) {
+  if (tuples.length === 0) return [];
+
+  let result = [];
+  let prevScore = null;
+  let nextRank = 1;      // The rank that will be assigned to the next new score
+  let tieCount = 0;      // Number of items in the current tie group
+  let tieGroupStart = 0; // Start index of the current tie group in the result array
+
+  for (let i = 0; i < tuples.length; i++) {
+    const [name, scoreRaw] = tuples[i];
+    const score = scoreF(scoreRaw);
+
+    if (prevScore === null) {
+      // First entry
+      result.push([name, scoreRaw, nextRank]);
+      tieCount = 1;
+      tieGroupStart = 0;
+    } else if (score === prevScore) {
+      // Tie with previous
+      result.push([name, scoreRaw, nextRank]);
+      tieCount++;
+    } else {
+      // A new score, so the previous tie group ends here
+      if (tieCount > 1) {
+        // Append tieCount to all tied entries
+        for (let j = tieGroupStart; j < tieGroupStart + tieCount; j++) {
+          result[j].push(tieCount);
+        }
+      }
+      // Update nextRank by adding the number of players in the previous tie group
+      nextRank += tieCount;
+      // Start a new group
+      tieCount = 1;
+      tieGroupStart = i;
+      result.push([name, scoreRaw, nextRank]);
+    }
+
+    prevScore = score;
+  }
+
+  // After the loop, check if the last group was a tie
+  if (tieCount > 1) {
+    for (let j = tieGroupStart; j < tieGroupStart + tieCount; j++) {
+      result[j].push(tieCount);
+    }
+  }
+
+  return result;
+}
+
 export function getHexColor(i) {
   const colors = [
     "#4CAF50", "#5C6BC0", "#FF5722", "#0288D1", "#388E3C", "#7B1FA2", "#D32F2F",

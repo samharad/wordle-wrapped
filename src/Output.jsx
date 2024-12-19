@@ -15,26 +15,29 @@ import {
   oToA,
   puzzleByNumber,
   restructureDailyAvgs,
-  restructureMonthlyAverages
+  restructureMonthlyAverages, roundingVals, withRankings
 } from "./logic.js";
 import {Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
 
-export default function Output({ hist, width }) {
-  const [names, setNames] = useState({});
+const dRank = (rank, tieN) => {
+  return `${rank}${tieN? "t" : ""})`;
+}
 
-  if (hist.length === 0) {
+export default function Output({ width, histDerived }) {
+  if (histDerived.length === 0) {
     return (<></>);
   }
-  const histDerived = hist.map(x => ({ ...x, person: names[x.person] || x.person }));
 
   const chartWidth = Math.min(Math.round(0.8*width), 450);
 
-  const averages = byValsAscending(calculateAverageScores(histDerived));
-  const failures = byValsAscending(calculateNumFailures(histDerived));
+  const averages = withRankings(byValsAscending(roundingVals(calculateAverageScores(histDerived), 2)));
+  const failures = withRankings(byValsAscending(calculateNumFailures(histDerived)));
   const streaksUnsorted = calculateLongestStreaks(histDerived);
-  const streaks = Object.keys(streaksUnsorted).map((k) => [k, streaksUnsorted[k]])
-      .sort(([k1, v1], [k2, v2]) => v2.n - v1.n);
-  const participationRates = byValsDescending(calculateParticipationRates(histDerived));
+  const streaks = withRankings(Object.keys(streaksUnsorted).map((k) => [k, streaksUnsorted[k]])
+      .sort(([k1, v1], [k2, v2]) => v2.n - v1.n),
+    x => x.n);
+  const participationRates = withRankings(byValsDescending(roundingVals(calculateParticipationRates(histDerived), 2)));
+
   const hardestData = calculateHardestPuzzle(histDerived);
   const hardestPuzzle = puzzleByNumber(hardestData.number);
   const mostFailedData = calculateMostFailedPuzzle(histDerived);
@@ -46,16 +49,15 @@ export default function Output({ hist, width }) {
 
   return (
     <>
-      <Participants hist={hist} names={names} setNames={setNames} />
       <ol>
 
         <li>
           <div className="border rounded bg-white text-dark-green">
             <div className="text-2xl font-bold">⭐️ Average Score</div>
             <div>
-              {averages.map(([person, avg], i) =>
+              {averages.map(([person, avg, rank, tieN], i) =>
                 <div key={i}>
-                  {i + 1}) {person} {(Math.round(avg * 100) / 100).toFixed(2)}
+                  {dRank(rank, tieN)} {person} {avg}
                 </div>
               )}
             </div>
@@ -66,9 +68,9 @@ export default function Output({ hist, width }) {
           <div className="border rounded bg-white text-dark-green">
             <div className="text-2xl font-bold">💩 Failures</div>
             <div>
-              {failures.map(([person, n], i) =>
+              {failures.map(([person, n, rank, tieN], i) =>
                 <div key={i}>
-                  {i + 1}) {person} {n}
+                  {dRank(rank, tieN)} {person} {n}
                 </div>
               )}
             </div>
@@ -79,9 +81,9 @@ export default function Output({ hist, width }) {
           <div className="border rounded bg-white text-dark-green">
             <div className="text-2xl font-bold">💫 Longest Streak</div>
             <div>
-              {streaks.map(([person, {n, days}], i) =>
+              {streaks.map(([person, {n, days}, rank, tieN], i) =>
                 <div key={i}>
-                  {i + 1}) {person} {n} {n > 1 && "(puzzles " + days[0] + " - " + days[1] + ")"}
+                  {dRank(rank, tieN)} {person} {n} {n > 1 && "(puzzles " + days[0] + " - " + days[1] + ")"}
                 </div>
               )}
             </div>
@@ -92,9 +94,9 @@ export default function Output({ hist, width }) {
           <div className="border rounded bg-white text-dark-green">
             <div className="text-2xl font-bold">🏅 Participation Rate</div>
             <div>
-              {participationRates.map(([person, r], i) =>
+              {participationRates.map(([person, r, rank, tieN], i) =>
                 <div key={i}>
-                  {i + 1}) {person} {(Math.round(r * 100) / 100).toFixed(2)}
+                  {dRank(rank, tieN)} {person} {r}
                 </div>
               )}
             </div>
@@ -112,8 +114,8 @@ export default function Output({ hist, width }) {
                     {person}
                   </div>
                   <div className="m-0 p-0 leading-none">
-                    {guesses.map(line =>
-                      <p>
+                    {guesses.map((line, j) =>
+                      <p key={j}>
                         {line}
                       </p>)}
                   </div>
@@ -134,8 +136,8 @@ export default function Output({ hist, width }) {
                     {person}
                   </div>
                   <div className="m-0 p-0 leading-none">
-                    {guesses.map(line =>
-                      <p>
+                    {guesses.map((line, j) =>
+                      <p key={j}>
                         {line}
                       </p>)}
                   </div>
@@ -157,8 +159,8 @@ export default function Output({ hist, width }) {
                       {person}
                     </div>
                     <div className="m-0 p-0 leading-none">
-                      {guesses.map(line =>
-                        <p>
+                      {guesses.map((line, j) =>
+                        <p key={j}>
                           {line}
                         </p>)}
                     </div>

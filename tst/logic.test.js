@@ -8,8 +8,33 @@ import {
   calculateParticipationRates,
   calculateHardestPuzzle,
   calculateEasiestAllPlay,
-  calculateMonthlyAverages, calculateAverageScoreByDayOfWeek
+  calculateMonthlyAverages, calculateAverageScoreByDayOfWeek, withRankings, roundingVals
 } from "../src/logic.js";
+
+test('roundingVals', () => {
+  const data = { a: 1.123, b: 2.987 };
+  expect(roundingVals(data, 2)).toEqual({
+    a: 1.12, b: 2.99
+  });
+});
+
+test('withRankings', () => {
+  const data = [["Sam", 10], ["Mom", 9], ["Tess", 9], ["Pauline", 8]];
+  expect(withRankings(data)).toEqual(
+    [["Sam", 10, 1], ["Mom", 9, 2, 2], ["Tess", 9, 2, 2], ["Pauline", 8, 4]]
+  );
+
+  const data1 = [["Sam", 10], ["Mom", 10], ["Tess", 10], ["Pauline", 11]];
+  expect(withRankings(data1)).toEqual(
+    [["Sam", 10, 1, 3], ["Mom", 10, 1, 3], ["Tess", 10, 1, 3], ["Pauline", 11, 4]]
+  );
+
+  const data2 = [["Sam", {a: 1}], ["Mom", {a: 1, b: 2}], ["Tess", {a: 10}], ["Pauline", {a: 11}]];
+  expect(withRankings(data2, x => x.a)).toEqual(
+    [["Sam", {a: 1}, 1, 2], ["Mom", {a: 1, b: 2}, 1, 2], ["Tess", {a: 10}, 3], ["Pauline", {a: 11}, 4]]
+  );
+
+});
 
 test('dailyAverages', () => {
   const data = [
