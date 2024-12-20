@@ -67,7 +67,7 @@ const responsive = {
   }
 };
 
-export default function Output({ width, histDerived }) {
+export default function Output({ width, histDerived, demoMode }) {
   if (histDerived.length === 0) {
     return (<></>);
   }
@@ -94,8 +94,6 @@ export default function Output({ width, histDerived }) {
     .map(([d, p]) => [d.substring(0, 3), p]));
 
   const commonClass =
-   // "max-w-80";
-   //  "";
     " md:mx-40 py-3 px-2";
 
   const CustomDot = ({ onClick, index, active }) => {
@@ -146,12 +144,14 @@ export default function Output({ width, histDerived }) {
 
         <Carousel
           additionalTransfrom={0}
-          arrows={width > 650}
-          autoPlaySpeed={3000}
+          arrows={!demoMode && width > 650}
+          autoPlay={demoMode}
+          autoPlaySpeed={1000}
           centerMode={false}
           className="h-full"
           containerClass="container-with-dots"
-          customDot={<CustomDot/>}
+          customDot={demoMode? <></> : <CustomDot/>}
+          // customTransition="all 5s linear"
           dotListClass=""
           draggable={false}
           focusOnSelect={false}
@@ -172,23 +172,27 @@ export default function Output({ width, histDerived }) {
           showDots={true}
           sliderClass=""
           slidesToSlide={1}
+          transitionDuration={1000}
           swipeable
         >
 
           <Card title="🌟 Average Score">
             <table className={"table-auto m-auto"}>
+              <tbody>
               {averages.map(([person, avg, rank, tieN], i) =>
                 <tr key={i}>
                   <td className={"p-1 px-5 text-left"}>{dRank(rank, tieN)}</td>
                   <td className={"p-1 px-5 text-left"}>{person}</td>
-                  <td className={"p-1 px-5 text-left"}>{avg}</td>
+                  <td className={"p-1 px-5 text-left"}>{avg.toFixed(2)}</td>
                 </tr>
               )}
+              </tbody>
             </table>
           </Card>
 
           <Card title={"💩 Failures"}>
             <table className={"table-auto m-auto"}>
+              <tbody>
               {failures.map(([person, n, rank, tieN], i) =>
                 <tr key={i}>
                   <td className={"p-1 px-5 text-left"}>{dRank(rank, tieN)}</td>
@@ -196,11 +200,13 @@ export default function Output({ width, histDerived }) {
                   <td className={"p-1 px-5 text-left"}>{n}</td>
                 </tr>
               )}
+              </tbody>
             </table>
           </Card>
 
           <Card title={"💫 Longest Streak (days)"}>
             <table className={"table-auto m-auto"}>
+              <tbody>
               {streaks.map(([person, {n, days}, rank, tieN], i) =>
                 <tr key={i}>
                   <td className={"p-1 px-5 text-left"}>{dRank(rank, tieN)}</td>
@@ -209,11 +215,13 @@ export default function Output({ width, histDerived }) {
                   {/*<td className={"p-1 px-5 text-left text-sm"}>{n > 1 && "(#" + days[0] + " - " + days[1] + ")"}</td>*/}
                 </tr>
               )}
+              </tbody>
             </table>
           </Card>
 
           <Card title={"👋 Participation Rate"}>
             <table className={"table-auto m-auto"}>
+              <tbody>
               {participationRates.map(([person, r, rank, tieN], i) =>
                 <tr key={i}>
                   <td className={"p-1 px-5 text-left"}>{dRank(rank, tieN)}</td>
@@ -221,6 +229,7 @@ export default function Output({ width, histDerived }) {
                   <td className={"p-1 px-5 text-left"}>{dPct(r)}</td>
                 </tr>
               )}
+              </tbody>
             </table>
           </Card>
 
@@ -267,7 +276,7 @@ export default function Output({ width, histDerived }) {
           {easiestAllPlayData &&
             <Card title={"🍰 Easiest All-Play"}>
               <div>
-                {`${easiestAllPlayPuzzle.number}, ${easiestAllPlayPuzzle.date}: ${easiestAllPlayPuzzle.word}`}
+                <PuzzleData puzzle={easiestAllPlayPuzzle} />
                 <div className={"flex flex-wrap justify-center"}>
                   {oToA(easiestAllPlayData.guesses).map(([person, guesses], i) =>
                     <div key={i} className={"mx-3"}>
@@ -295,7 +304,7 @@ export default function Output({ width, histDerived }) {
                 <YAxis domain={['dataMin - 1', 'dataMax + 1']}/>
                 <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
                 {Object.keys(monthlyAverages).map((k, i) =>
-                  <Line type="linear" dataKey={k} stroke={getHexColor(i)}/>)}
+                  <Line key={i} type="linear" dataKey={k} stroke={getHexColor(i)}/>)}
               </LineChart>
             </div>
           </Card>

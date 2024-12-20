@@ -36,7 +36,7 @@ function App() {
         // className="margin-auto max-w-lg mx-auto text-center"
       >
         <Routes>
-          <Route path="/" element={<Home />}/>
+          <Route path="/" element={<Home  width={width} histDerived={histDerived} />}/>
           <Route path="/input" element={<Input rawHist={rawHist} setRawHist={setRawHist} />} />
           <Route path="/input-review" element={<InputReview hist={hist} names={names} setNames={setNames} />} />
           <Route path="/output" element={<Output histDerived={histDerived} width={width} />} />
