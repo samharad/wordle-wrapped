@@ -8,8 +8,24 @@ import {
   calculateParticipationRates,
   calculateHardestPuzzle,
   calculateEasiestAllPlay,
-  calculateMonthlyAverages, calculateAverageScoreByDayOfWeek, withRankings, roundingVals
+  calculateMonthlyAverages, calculateAverageScoreByDayOfWeek, withRankings, roundingVals, calculateGamesPerDayOfWeek
 } from "../src/logic.js";
+
+test('perDay', () => {
+  const data = [
+    {person: 'Sam', number: 1277, attempts: 6},
+    {person: 'Sam', number: 1278, attempts: 6},
+    {person: 'Helena', number: 1278, attempts: 2}];
+  expect(calculateGamesPerDayOfWeek(data)).toEqual({
+    Sunday: 0,
+    Monday: 0,
+    Tuesday: 1,
+    Wednesday: 2,
+    Thursday: 0,
+    Friday: 0,
+    Saturday: 0
+  });
+})
 
 test('roundingVals', () => {
   const data = { a: 1.123, b: 2.987 };

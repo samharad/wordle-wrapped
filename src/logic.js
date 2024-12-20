@@ -7,6 +7,10 @@ export function oToA(o) {
   return Object.keys(o).map((k) => [k, o[k]])
 }
 
+export function aToO(a) {
+  return Object.fromEntries(a);
+}
+
 export function byValsAscending(x) {
   return oToA(x).sort(([k1, v1], [k2, v2]) => v1 - v2);
 }
@@ -678,10 +682,72 @@ export function calculateAverageScoreByDayOfWeek(data) {
       .map(([d, s]) => [d.substring(0, 3), s]));
 }
 
-export function restructureDailyAvgs(data) {
+export function restructureByDayMap(data) {
   const dayOrder = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   return Object.entries(data)
     .map(([day, n]) => ({ day, n }))
     .sort((a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day));
+}
+
+export function calculateGamesPerDayOfWeek(data) {
+  // data is an array of objects like:
+  // { person: 'Mom', number: 1043, attempts: 4, ... }
+
+  // puzzleByNumber(n) returns something like:
+  // { number: 1273, date: "December 13 2024", word: "BOXER" }
+
+  const dayOfWeekMap = {
+    0: 'Sunday',
+    1: 'Monday',
+    2: 'Tuesday',
+    3: 'Wednesday',
+    4: 'Thursday',
+    5: 'Friday',
+    6: 'Saturday'
+  };
+
+  const counts = {
+    Sunday: 0,
+    Monday: 0,
+    Tuesday: 0,
+    Wednesday: 0,
+    Thursday: 0,
+    Friday: 0,
+    Saturday: 0
+  };
+
+  // To avoid counting duplicates if multiple people played the same puzzle,
+  // we need to consider how we define "number of games played."
+  // If we consider each person's attempt as a separate "game," just count them directly.
+  // If we consider each puzzle as a single game (regardless of how many people played),
+  // we need to track puzzles to not double-count.
+  //
+  // Let's assume each entry in data is a distinct game by a particular person.
+
+  for (const entry of data) {
+    const puzzle = puzzleByNumber(entry.number);
+    if (!puzzle || !puzzle.date) continue;
+
+    // puzzle.date format: "December 13 2024"
+    const parts = puzzle.date.split(' ');
+    if (parts.length < 3) continue;
+
+    const [monthName, dayStr, yearStr] = parts;
+    const day = parseInt(dayStr, 10);
+    const year = parseInt(yearStr, 10);
+
+    const monthMap = {
+      January: 0, February: 1, March: 2, April: 3, May: 4, June: 5,
+      July: 6, August: 7, September: 8, October: 9, November: 10, December: 11
+    };
+    const month = monthMap[monthName];
+    if (month === undefined) continue;
+
+    const dateObj = new Date(year, month, day);
+    const dayOfWeek = dayOfWeekMap[dateObj.getDay()];
+    counts[dayOfWeek] += 1;
+  }
+
+  return counts;
 }

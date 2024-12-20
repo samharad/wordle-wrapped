@@ -1,11 +1,12 @@
 import Participants from "./Participants.jsx";
 import { useState } from "react";
 import {
+  aToO,
   byValsAscending,
   byValsDescending,
   calculateAverageScoreByDayOfWeek,
   calculateAverageScores,
-  calculateEasiestAllPlay,
+  calculateEasiestAllPlay, calculateGamesPerDayOfWeek,
   calculateHardestPuzzle,
   calculateLongestStreaks,
   calculateMonthlyAverages,
@@ -14,7 +15,7 @@ import {
   calculateParticipationRates, getHexColor,
   oToA,
   puzzleByNumber,
-  restructureDailyAvgs,
+  restructureByDayMap,
   restructureMonthlyAverages, roundingVals, withRankings
 } from "./logic.js";
 import {Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
@@ -89,6 +90,8 @@ export default function Output({ width, histDerived }) {
   const easiestAllPlayPuzzle = easiestAllPlayData && puzzleByNumber(easiestAllPlayData.number);
   const monthlyAverages = calculateMonthlyAverages(histDerived);
   const dailyAverages = calculateAverageScoreByDayOfWeek(histDerived);
+  const dailyCounts = aToO(oToA(calculateGamesPerDayOfWeek(histDerived))
+    .map(([d, p]) => [d.substring(0, 3), p]));
 
   const commonClass =
    // "max-w-80";
@@ -294,9 +297,21 @@ export default function Output({ width, histDerived }) {
             </div>
           </Card>
 
+          <Card title={"☀️ Daily Submissions"}>
+            <div className={"flex justify-center text-lg"}>
+              <BarChart width={chartWidth} height={chartWidth} data={restructureByDayMap(dailyCounts)}>
+                <CartesianGrid strokeDasharray="3 3"/>
+                <XAxis dataKey="day"/>
+                <YAxis domain={[1, 7]}/>
+                <Tooltip/>
+                <Bar dataKey="n" fill="#8884d8"/>
+              </BarChart>
+            </div>
+          </Card>
+
           <Card title={"📊 Daily Averages"}>
             <div className={"flex justify-center text-lg"}>
-              <BarChart width={chartWidth} height={chartWidth} data={restructureDailyAvgs(dailyAverages)}>
+              <BarChart width={chartWidth} height={chartWidth} data={restructureByDayMap(dailyAverages)}>
                 <CartesianGrid strokeDasharray="3 3"/>
                 <XAxis dataKey="day"/>
                 <YAxis domain={[1, 7]}/>
