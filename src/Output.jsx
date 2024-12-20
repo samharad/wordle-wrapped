@@ -286,10 +286,13 @@ export default function Output({ width, histDerived }) {
           <Card title={"📈 Monthly Trends"}>
             <div className={"flex justify-center text-lg"}>
               <LineChart width={chartWidth} height={chartWidth} data={restructureMonthlyAverages(monthlyAverages)}>
-                <Legend verticalAlign="top" height={36}/>
+                <Legend formatter={(v, e, i) => v.length < 10 ? v : `${v.substring(0, 10)}...`}
+                        verticalAlign={"bottom"}
+                        height={36}
+                        />
                 <Tooltip/>
-                <XAxis dataKey="monthYear"/>
-                <YAxis domain={[1, 7]}/>
+                <XAxis interval={1} dataKey="monthYear"/>
+                <YAxis domain={['dataMin - 1', 'dataMax + 1']}/>
                 <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
                 {Object.keys(monthlyAverages).map((k, i) =>
                   <Line type="linear" dataKey={k} stroke={getHexColor(i)}/>)}
@@ -302,24 +305,24 @@ export default function Output({ width, histDerived }) {
               <BarChart width={chartWidth} height={chartWidth} data={restructureByDayMap(dailyCounts)}>
                 <CartesianGrid strokeDasharray="3 3"/>
                 <XAxis dataKey="day"/>
-                <YAxis domain={[1, 7]}/>
+                <YAxis />
                 <Tooltip/>
-                <Bar dataKey="n" fill="#8884d8"/>
+                <Bar dataKey="n" fill="#bc4749"/>
               </BarChart>
             </div>
           </Card>
 
-          <Card title={"📊 Daily Averages"}>
-            <div className={"flex justify-center text-lg"}>
-              <BarChart width={chartWidth} height={chartWidth} data={restructureByDayMap(dailyAverages)}>
-                <CartesianGrid strokeDasharray="3 3"/>
-                <XAxis dataKey="day"/>
-                <YAxis domain={[1, 7]}/>
-                <Tooltip/>
-                <Bar dataKey="n" fill="#8884d8"/>
-              </BarChart>
-            </div>
-          </Card>
+          {/*<Card title={"📊 Daily Averages"}>*/}
+          {/*  <div className={"flex justify-center text-lg"}>*/}
+          {/*    <BarChart width={chartWidth} height={chartWidth} data={restructureByDayMap(dailyAverages)}>*/}
+          {/*      <CartesianGrid strokeDasharray="3 3"/>*/}
+          {/*      <XAxis dataKey="day"/>*/}
+          {/*      <YAxis domain={[1, 7]}/>*/}
+          {/*      <Tooltip/>*/}
+          {/*      <Bar dataKey="n" fill="#8884d8"/>*/}
+          {/*    </BarChart>*/}
+          {/*  </div>*/}
+          {/*</Card>*/}
 
         </Carousel>
 

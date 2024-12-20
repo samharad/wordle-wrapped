@@ -538,7 +538,7 @@ export function calculateMonthlyAverages(data) {
   for (const person in results) {
     for (const monthYear in results[person]) {
       const { total, count } = results[person][monthYear];
-      results[person][monthYear] = total / count;
+      results[person][monthYear] = (total / count).toFixed(2);
     }
   }
 
