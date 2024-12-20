@@ -1,5 +1,18 @@
 import {Link} from "react-router";
 
+export function MediumButton({ content, onClick, disabled }) {
+  return disabled
+    ? <button
+      className="text-xl bg-white text-red hover:bg-red hover:text-white font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded opacity-50 cursor-not-allowed">
+      {content}
+    </button>
+    : <button
+      className="text-xl bg-white text-red hover:bg-red hover:text-white font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+      onClick={onClick}>
+      {content}
+    </button>;
+}
+
 export function BigButton({ content, onClick, disabled }) {
   return disabled
     ? <button

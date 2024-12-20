@@ -21,7 +21,8 @@ import {
 import {Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
 import Carousel from "react-multi-carousel";
 import 'react-multi-carousel/lib/styles.css';
-import {Card} from "./commonComponents.jsx";
+import {BigButton, Card, MediumButton, SmallButton} from "./commonComponents.jsx";
+import {Link} from "react-router";
 
 const dRank = (rank, tieN) => {
   if (rank === 1) {
@@ -125,203 +126,210 @@ export default function Output({ width, histDerived, demoMode }) {
   const dPct = x => `${Math.round(x * 100)}%`;
 
   return (
-    <div className={"flex flex-col justify-center h-full"}>
-      <div className={"h-full text-2xl"}>
+    <>
+      <div className={"fixed top-4 right-4"} style={{ zIndex: 99999}}>
+        <MediumButton content={"💌 Share!"}>
+          <Link to={"/output?share"} />
+        </MediumButton>
+      </div>
+      <div className={"flex flex-col justify-center h-full"}>
+        <div className={"h-full text-2xl"}>
 
-        <Carousel
-          additionalTransfrom={0}
-          arrows={!demoMode && width > 650}
-          autoPlay={demoMode}
-          autoPlaySpeed={1000}
-          centerMode={false}
-          className="h-full"
-          containerClass="container-with-dots"
-          customDot={demoMode? <></> : <CustomDot/>}
-          // customTransition="all 5s linear"
-          dotListClass=""
-          draggable={false}
-          focusOnSelect={false}
-          infinite
-          itemClass=""
-          keyBoardControl
-          minimumTouchDrag={80}
-          partialVisible={false}
-          pauseOnHover
-          renderArrowsWhenDisabled={false}
-          renderButtonGroupOutside={false}
-          renderDotsOutside={false}
-          responsive={responsive}
-          rewind={false}
-          rewindWithAnimation={false}
-          rtl={false}
-          shouldResetAutoplay
-          showDots={true}
-          sliderClass=""
-          slidesToSlide={1}
-          transitionDuration={1000}
-          swipeable
-        >
+          <Carousel
+            additionalTransfrom={0}
+            arrows={!demoMode && width > 650}
+            autoPlay={demoMode}
+            autoPlaySpeed={1000}
+            centerMode={false}
+            className="h-full"
+            containerClass="container-with-dots"
+            customDot={demoMode ? <></> : <CustomDot/>}
+            // customTransition="all 5s linear"
+            dotListClass=""
+            draggable={false}
+            focusOnSelect={false}
+            infinite
+            itemClass=""
+            keyBoardControl
+            minimumTouchDrag={80}
+            partialVisible={false}
+            pauseOnHover
+            renderArrowsWhenDisabled={false}
+            renderButtonGroupOutside={false}
+            renderDotsOutside={false}
+            responsive={responsive}
+            rewind={false}
+            rewindWithAnimation={false}
+            rtl={false}
+            shouldResetAutoplay
+            showDots={true}
+            sliderClass=""
+            slidesToSlide={1}
+            transitionDuration={1000}
+            swipeable
+          >
 
-          <Card title="🌟 Average Score">
-            <table className={"table-auto m-auto"}>
-              <tbody>
-              {averages.map(([person, avg, rank, tieN], i) =>
-                <tr key={i}>
-                  <td className={"p-1 px-5 text-left"}>{dRank(rank, tieN)}</td>
-                  <td className={"p-1 px-5 text-left"}>{person}</td>
-                  <td className={"p-1 px-5 text-left"}>{avg.toFixed(2)}</td>
-                </tr>
-              )}
-              </tbody>
-            </table>
-          </Card>
-
-          <Card title={"💩 Failures"}>
-            <table className={"table-auto m-auto"}>
-              <tbody>
-              {failures.map(([person, n, rank, tieN], i) =>
-                <tr key={i}>
-                  <td className={"p-1 px-5 text-left"}>{dRank(rank, tieN)}</td>
-                  <td className={"p-1 px-5 text-left"}>{person}</td>
-                  <td className={"p-1 px-5 text-left"}>{n}</td>
-                </tr>
-              )}
-              </tbody>
-            </table>
-          </Card>
-
-          <Card title={"💫 Longest Streak (days)"}>
-            <table className={"table-auto m-auto"}>
-              <tbody>
-              {streaks.map(([person, {n, days}, rank, tieN], i) =>
-                <tr key={i}>
-                  <td className={"p-1 px-5 text-left"}>{dRank(rank, tieN)}</td>
-                  <td className={"p-1 px-5 text-left"}>{person}</td>
-                  <td className={"p-1 px-5 text-left"}>{n}</td>
-                  {/*<td className={"p-1 px-5 text-left text-sm"}>{n > 1 && "(#" + days[0] + " - " + days[1] + ")"}</td>*/}
-                </tr>
-              )}
-              </tbody>
-            </table>
-          </Card>
-
-          <Card title={"👋 Participation Rate"}>
-            <table className={"table-auto m-auto"}>
-              <tbody>
-              {participationRates.map(([person, r, rank, tieN], i) =>
-                <tr key={i}>
-                  <td className={"p-1 px-5 text-left"}>{dRank(rank, tieN)}</td>
-                  <td className={"p-1 px-5 text-left"}>{person}</td>
-                  <td className={"p-1 px-5 text-left"}>{dPct(r)}</td>
-                </tr>
-              )}
-              </tbody>
-            </table>
-          </Card>
-
-          <Card title={"😭 Hardest Puzzle (scores)"}>
-            <div>
-              <PuzzleData puzzle={hardestPuzzle}/>
-              <div className={"flex flex-wrap justify-center"}>
-                {oToA(hardestData.guesses)
-                  .sort(([p1, g1], [p2, g2]) => g1.length - g2.length)
-                  .map(([person, guesses], i) =>
-                  <div key={i} className={"mx-3"}>
-                    <div className={"truncate"}>
-                      {person}
-                    </div>
-                    <div className="m-0 p-0 leading-none whitespace-pre">
-                      {guesses.join("\n")}
-                    </div>
-                  </div>
+            <Card title="🌟 Average Score">
+              <table className={"table-auto m-auto"}>
+                <tbody>
+                {averages.map(([person, avg, rank, tieN], i) =>
+                  <tr key={i}>
+                    <td className={"p-1 px-5 text-left"}>{dRank(rank, tieN)}</td>
+                    <td className={"p-1 px-5 text-left"}>{person}</td>
+                    <td className={"p-1 px-5 text-left"}>{avg.toFixed(2)}</td>
+                  </tr>
                 )}
-              </div>
-            </div>
-          </Card>
+                </tbody>
+              </table>
+            </Card>
 
-          <Card title={"😢 Hardest Puzzle (most fails)"}>
-            <div>
-              <PuzzleData puzzle={mostFailedPuzzle} />
-              <div className={"flex flex-wrap justify-center"}>
-                {oToA(mostFailedData.guesses)
-                  .sort(([p1, g1], [p2, g2]) => g1.length - g2.length)
-                  .map(([person, guesses], i) =>
-                  <div key={i} className={"mx-3"}>
-                    <div className={"truncate max-w-24"}>
-                      {person}
-                    </div>
-                    <div className="m-0 p-0 leading-none whitespace-pre">
-                      {guesses.join("\n")}
-                    </div>
-                  </div>
+            <Card title={"💩 Failures"}>
+              <table className={"table-auto m-auto"}>
+                <tbody>
+                {failures.map(([person, n, rank, tieN], i) =>
+                  <tr key={i}>
+                    <td className={"p-1 px-5 text-left"}>{dRank(rank, tieN)}</td>
+                    <td className={"p-1 px-5 text-left"}>{person}</td>
+                    <td className={"p-1 px-5 text-left"}>{n}</td>
+                  </tr>
                 )}
-              </div>
-            </div>
-          </Card>
+                </tbody>
+              </table>
+            </Card>
 
-          {easiestAllPlayData &&
-            <Card title={"🍰 Easiest All-Play"}>
+            <Card title={"💫 Longest Streak (days)"}>
+              <table className={"table-auto m-auto"}>
+                <tbody>
+                {streaks.map(([person, {n, days}, rank, tieN], i) =>
+                  <tr key={i}>
+                    <td className={"p-1 px-5 text-left"}>{dRank(rank, tieN)}</td>
+                    <td className={"p-1 px-5 text-left"}>{person}</td>
+                    <td className={"p-1 px-5 text-left"}>{n}</td>
+                    {/*<td className={"p-1 px-5 text-left text-sm"}>{n > 1 && "(#" + days[0] + " - " + days[1] + ")"}</td>*/}
+                  </tr>
+                )}
+                </tbody>
+              </table>
+            </Card>
+
+            <Card title={"👋 Participation Rate"}>
+              <table className={"table-auto m-auto"}>
+                <tbody>
+                {participationRates.map(([person, r, rank, tieN], i) =>
+                  <tr key={i}>
+                    <td className={"p-1 px-5 text-left"}>{dRank(rank, tieN)}</td>
+                    <td className={"p-1 px-5 text-left"}>{person}</td>
+                    <td className={"p-1 px-5 text-left"}>{dPct(r)}</td>
+                  </tr>
+                )}
+                </tbody>
+              </table>
+            </Card>
+
+            <Card title={"😭 Hardest Puzzle (scores)"}>
               <div>
-                <PuzzleData puzzle={easiestAllPlayPuzzle} />
+                <PuzzleData puzzle={hardestPuzzle}/>
                 <div className={"flex flex-wrap justify-center"}>
-                  {oToA(easiestAllPlayData.guesses).map(([person, guesses], i) =>
-                    <div key={i} className={"mx-3"}>
-                      <div className={"truncate"}>
-                        {person}
+                  {oToA(hardestData.guesses)
+                    .sort(([p1, g1], [p2, g2]) => g1.length - g2.length)
+                    .map(([person, guesses], i) =>
+                      <div key={i} className={"mx-3"}>
+                        <div className={"truncate"}>
+                          {person}
+                        </div>
+                        <div className="m-0 p-0 leading-none whitespace-pre">
+                          {guesses.join("\n")}
+                        </div>
                       </div>
-                      <div className="m-0 p-0 leading-none whitespace-pre">
-                        {guesses.join("\n")}
-                      </div>
-                    </div>
-                  )}
+                    )}
                 </div>
               </div>
-            </Card>}
+            </Card>
 
-          <Card title={"📈 Monthly Trends"}>
-            <div className={"flex justify-center text-lg"}>
-              <LineChart width={chartWidth} height={chartWidth} data={restructureMonthlyAverages(monthlyAverages)}>
-                <Legend formatter={(v, e, i) => v.length < 10 ? v : `${v.substring(0, 10)}...`}
-                        verticalAlign={"bottom"}
-                        height={36}
-                        />
-                <Tooltip/>
-                <XAxis interval={1} dataKey="monthYear"/>
-                <YAxis domain={['dataMin - 1', 'dataMax + 1']}/>
-                <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
-                {Object.keys(monthlyAverages).map((k, i) =>
-                  <Line key={i} type="linear" dataKey={k} stroke={getHexColor(i)}/>)}
-              </LineChart>
-            </div>
-          </Card>
+            <Card title={"😢 Hardest Puzzle (most fails)"}>
+              <div>
+                <PuzzleData puzzle={mostFailedPuzzle}/>
+                <div className={"flex flex-wrap justify-center"}>
+                  {oToA(mostFailedData.guesses)
+                    .sort(([p1, g1], [p2, g2]) => g1.length - g2.length)
+                    .map(([person, guesses], i) =>
+                      <div key={i} className={"mx-3"}>
+                        <div className={"truncate max-w-24"}>
+                          {person}
+                        </div>
+                        <div className="m-0 p-0 leading-none whitespace-pre">
+                          {guesses.join("\n")}
+                        </div>
+                      </div>
+                    )}
+                </div>
+              </div>
+            </Card>
 
-          <Card title={"☀️ Daily Submissions"}>
-            <div className={"flex justify-center text-lg"}>
-              <BarChart width={chartWidth} height={chartWidth} data={restructureByDayMap(dailyCounts)}>
-                <CartesianGrid strokeDasharray="3 3"/>
-                <XAxis dataKey="day"/>
-                <YAxis />
-                <Tooltip/>
-                <Bar dataKey="n" fill="#bc4749"/>
-              </BarChart>
-            </div>
-          </Card>
+            {easiestAllPlayData &&
+              <Card title={"🍰 Easiest All-Play"}>
+                <div>
+                  <PuzzleData puzzle={easiestAllPlayPuzzle}/>
+                  <div className={"flex flex-wrap justify-center"}>
+                    {oToA(easiestAllPlayData.guesses).map(([person, guesses], i) =>
+                      <div key={i} className={"mx-3"}>
+                        <div className={"truncate"}>
+                          {person}
+                        </div>
+                        <div className="m-0 p-0 leading-none whitespace-pre">
+                          {guesses.join("\n")}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </Card>}
 
-          {/*<Card title={"📊 Daily Averages"}>*/}
-          {/*  <div className={"flex justify-center text-lg"}>*/}
-          {/*    <BarChart width={chartWidth} height={chartWidth} data={restructureByDayMap(dailyAverages)}>*/}
-          {/*      <CartesianGrid strokeDasharray="3 3"/>*/}
-          {/*      <XAxis dataKey="day"/>*/}
-          {/*      <YAxis domain={[1, 7]}/>*/}
-          {/*      <Tooltip/>*/}
-          {/*      <Bar dataKey="n" fill="#8884d8"/>*/}
-          {/*    </BarChart>*/}
-          {/*  </div>*/}
-          {/*</Card>*/}
+            <Card title={"📈 Monthly Trends"}>
+              <div className={"flex justify-center text-lg"}>
+                <LineChart width={chartWidth} height={chartWidth} data={restructureMonthlyAverages(monthlyAverages)}>
+                  <Legend formatter={(v, e, i) => v.length < 10 ? v : `${v.substring(0, 10)}...`}
+                          verticalAlign={"bottom"}
+                          height={36}
+                  />
+                  <Tooltip/>
+                  <XAxis interval={1} dataKey="monthYear"/>
+                  <YAxis domain={['dataMin - 1', 'dataMax + 1']}/>
+                  <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
+                  {Object.keys(monthlyAverages).map((k, i) =>
+                    <Line key={i} type="linear" dataKey={k} stroke={getHexColor(i)}/>)}
+                </LineChart>
+              </div>
+            </Card>
 
-        </Carousel>
+            <Card title={"☀️ Daily Submissions"}>
+              <div className={"flex justify-center text-lg"}>
+                <BarChart width={chartWidth} height={chartWidth} data={restructureByDayMap(dailyCounts)}>
+                  <CartesianGrid strokeDasharray="3 3"/>
+                  <XAxis dataKey="day"/>
+                  <YAxis/>
+                  <Tooltip/>
+                  <Bar dataKey="n" fill="#bc4749"/>
+                </BarChart>
+              </div>
+            </Card>
 
+            {/*<Card title={"📊 Daily Averages"}>*/}
+            {/*  <div className={"flex justify-center text-lg"}>*/}
+            {/*    <BarChart width={chartWidth} height={chartWidth} data={restructureByDayMap(dailyAverages)}>*/}
+            {/*      <CartesianGrid strokeDasharray="3 3"/>*/}
+            {/*      <XAxis dataKey="day"/>*/}
+            {/*      <YAxis domain={[1, 7]}/>*/}
+            {/*      <Tooltip/>*/}
+            {/*      <Bar dataKey="n" fill="#8884d8"/>*/}
+            {/*    </BarChart>*/}
+            {/*  </div>*/}
+            {/*</Card>*/}
+
+          </Carousel>
+
+        </div>
       </div>
-    </div>
+    </>
   );
 }
