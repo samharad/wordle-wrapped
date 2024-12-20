@@ -6,9 +6,9 @@ const rules = {
     histories: {
         allow: {
             view: "true",
-            create: "isOwner",
-            update: "isOwner",
-            delete: "isOwner",
+            create: "true",
+            update: "false",
+            delete: "false",
         },
         bind: ["isOwner", "auth.id != null && auth.id == data.creatorId"],
     },

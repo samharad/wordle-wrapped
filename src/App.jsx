@@ -7,6 +7,9 @@ import InputReview from "./InputReview.jsx";
 import {parseWordleHistory} from "./logic.js";
 import SharedOutput from "./SharedOutput.jsx";
 import GeneratedOutput from "./GeneratedOutput.jsx";
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 function App() {
   const [rawHist, setRawHist] = useState("");
