@@ -23,6 +23,7 @@ import Carousel from "react-multi-carousel";
 import 'react-multi-carousel/lib/styles.css';
 import {BigButton, Card, MediumButton, SmallButton} from "./commonComponents.jsx";
 import {Link} from "react-router";
+import {addHist} from "./instantDb.js";
 
 const dRank = (rank, tieN) => {
   if (rank === 1) {
@@ -127,11 +128,6 @@ export default function Output({ width, histDerived, demoMode }) {
 
   return (
     <>
-      <div className={"fixed top-4 right-4"} style={{ zIndex: 99999}}>
-        <MediumButton content={"💌 Share!"}>
-          <Link to={"/output?share"} />
-        </MediumButton>
-      </div>
       <div className={"flex flex-col justify-center h-full"}>
         <div className={"h-full text-2xl"}>
 

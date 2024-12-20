@@ -5,6 +5,8 @@ import Input from "./Input.jsx";
 import Home from "./Home.jsx";
 import InputReview from "./InputReview.jsx";
 import {parseWordleHistory} from "./logic.js";
+import SharedOutput from "./SharedOutput.jsx";
+import GeneratedOutput from "./GeneratedOutput.jsx";
 
 function App() {
   const [rawHist, setRawHist] = useState("");
@@ -31,15 +33,13 @@ function App() {
 
   return (
     <>
-      <div
-        className={"text-center h-full"}
-        // className="margin-auto max-w-lg mx-auto text-center"
-      >
+      <div className={"text-center h-full"}>
         <Routes>
           <Route path="/" element={<Home  width={width} histDerived={histDerived} />}/>
           <Route path="/input" element={<Input rawHist={rawHist} setRawHist={setRawHist} histDerived={histDerived}/>} />
           <Route path="/input-review" element={<InputReview hist={hist} names={names} setNames={setNames} />} />
-          <Route path="/output" element={<Output histDerived={histDerived} width={width} />} />
+          <Route path="/output" element={<GeneratedOutput histDerived={histDerived} width={width} />} />
+          <Route path="/share" element={<SharedOutput width={width} />} />
         </Routes>
       </div>
     </>
