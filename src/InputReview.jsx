@@ -1,5 +1,6 @@
 import Participants from "./Participants.jsx";
 import {Link} from "react-router";
+import {BigButton} from "./commonComponents.jsx";
 
 export default function InputReview({ hist, names, setNames }) {
   if (hist.length === 0) {
@@ -7,21 +8,14 @@ export default function InputReview({ hist, names, setNames }) {
   }
 
   return (
-    <>
+    <div className={"flex flex-col"}>
+      <div>
+        <Participants hist={hist} names={names} setNames={setNames}/>
+      </div>
 
-      <ol>
-        <li className="my-3">
-          <Participants hist={hist} names={names} setNames={setNames}/>
-        </li>
-
-        <li className="my-3">
-          <button className="bg-white text-red hover:bg-red hover:text-white font-bold px-4 rounded">
-            <Link to="/output">Continue</Link>
-          </button>
-        </li>
-      </ol>
-
-
-    </>
+      <div className={"py-3"}>
+        <BigButton content={<Link to="/output">Continue</Link>}/>
+      </div>
+    </div>
   );
 }

@@ -1,6 +1,7 @@
 import {Link} from "react-router";
 import Output from "./Output.jsx";
 import {placeHistDerived} from "./placeHistDerived.js";
+import {BigButton} from "./commonComponents.jsx";
 
 export default function Home({ width }) {
   return (
@@ -10,10 +11,7 @@ export default function Home({ width }) {
              transform: "translate(-50%, -50%)",
              zIndex: 9999,
       }}>
-        <button
-          className="text-3xl bg-white text-red hover:bg-red hover:text-white font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-          <Link to="/input">🎁 Get Wrapping 🎁</Link>
-        </button>
+        <BigButton content={<Link to="/input">🎁 Get Wrapping 🎁</Link>} />
       </div>
       <div className={"opacity-50 h-full pointer-events-none"}>
         <Output width={width}

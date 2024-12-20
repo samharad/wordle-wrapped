@@ -1,14 +1,14 @@
 # TODO
 
-- [ ] Improve usability instructions
-- [ ] Make it shareable
-- [ ] Make it save-able
+- [ ] Prev buttons in workflow
+- [ ] Make it save/shareable
 - [ ] Deploy
-- [ ] Show placeholder data when nothing is pasted
 - [ ] Favicon
 - [ ] More stats
     - [ ] Year-long participation trend
-- [ ] Test with long names
+- [ ] Consider: placeholder messages
+- [x] Test with long names
+- [x] Improve usability instructions
 - [x] Make it look good
 - [x] Make it look good on mobile
 - [x] Display ties correctly

@@ -21,6 +21,7 @@ import {
 import {Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
 import Carousel from "react-multi-carousel";
 import 'react-multi-carousel/lib/styles.css';
+import {Card} from "./commonComponents.jsx";
 
 const dRank = (rank, tieN) => {
   if (rank === 1) {
@@ -93,9 +94,6 @@ export default function Output({ width, histDerived, demoMode }) {
   const dailyCounts = aToO(oToA(calculateGamesPerDayOfWeek(histDerived))
     .map(([d, p]) => [d.substring(0, 3), p]));
 
-  const commonClass =
-    " md:mx-40 py-3 px-2";
-
   const CustomDot = ({ onClick, index, active }) => {
     return (
       <button
@@ -111,18 +109,6 @@ export default function Output({ width, histDerived, demoMode }) {
       </button>
     );
   };
-
-  const Card = ({ title, children }) => (
-    <div className={"border rounded bg-white text-dark-green" + commonClass}>
-      <div className="text-4xl font-bold">{title}</div>
-      <div className={"flex items-center"}>
-        <hr align="center" className={"w-2/3 m-auto my-2"}/>
-      </div>
-      <div>
-        {children}
-      </div>
-    </div>
-  );
 
   const dDateSm = s => {
     const dateObj = new Date(s);
