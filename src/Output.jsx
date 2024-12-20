@@ -123,6 +123,18 @@ export default function Output({ width, histDerived }) {
     </div>
   );
 
+  const dDateSm = s => {
+    const dateObj = new Date(s);
+    const options = { year: '2-digit', month: 'numeric', day: 'numeric' };
+    return dateObj.toLocaleDateString('en-US', options);
+  }
+
+  const PuzzleData = ({ puzzle: { number, date, word }}) => (
+    <div className={"py-2"}>
+      <span className={"font-bold px-2"}>{`${word}`}</span>
+    </div>
+  );
+
   const dPct = x => `${Math.round(x * 100)}%`;
 
   return (
@@ -211,9 +223,11 @@ export default function Output({ width, histDerived }) {
 
           <Card title={"😭 Hardest Puzzle (scores)"}>
             <div>
-              {`${hardestPuzzle.number}, ${hardestPuzzle.date}: ${hardestPuzzle.word}`}
+              <PuzzleData puzzle={hardestPuzzle}/>
               <div className={"flex flex-wrap justify-center"}>
-                {oToA(hardestData.guesses).map(([person, guesses], i) =>
+                {oToA(hardestData.guesses)
+                  .sort(([p1, g1], [p2, g2]) => g1.length - g2.length)
+                  .map(([person, guesses], i) =>
                   <div key={i} className={"mx-3"}>
                     <div className={"truncate"}>
                       {person}
@@ -229,9 +243,11 @@ export default function Output({ width, histDerived }) {
 
           <Card title={"😢 Hardest Puzzle (most fails)"}>
             <div>
-              {`${mostFailedPuzzle.number}, ${mostFailedPuzzle.date}: ${mostFailedPuzzle.word}`}
+              <PuzzleData puzzle={mostFailedPuzzle} />
               <div className={"flex flex-wrap justify-center"}>
-                {oToA(mostFailedData.guesses).map(([person, guesses], i) =>
+                {oToA(mostFailedData.guesses)
+                  .sort(([p1, g1], [p2, g2]) => g1.length - g2.length)
+                  .map(([person, guesses], i) =>
                   <div key={i} className={"mx-3"}>
                     <div className={"truncate max-w-24"}>
                       {person}
