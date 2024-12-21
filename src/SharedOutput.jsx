@@ -1,17 +1,19 @@
-import {useSearchParams} from "react-router";
+import {useParams, useSearchParams} from "react-router";
 import Output from "./Output.jsx";
 import {db} from "./instantDb.js";
 import 'react-multi-carousel/lib/styles.css';
+import {Spinner} from "./commonComponents.jsx";
 
 export default function SharedOutput({ width }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const histId = searchParams.get('histId');
+  let params = useParams();
+  const shortId = params.shortId;
 
   const query = {
     histories: {
       $: {
         where: {
-          id: histId,
+          shortId: shortId,
         },
       },
     },
@@ -24,7 +26,9 @@ export default function SharedOutput({ width }) {
   console.log(data);
 
   return (
-    <Output width={width} histDerived={data && data.histories[0] ? data.histories[0].hist : []}/>
+    isLoading
+      ? <div className={"h-full flex flex-col align-center justify-center content-center text-5xl"}><Spinner /></div>
+      : <Output width={width} histDerived={data && data.histories[0] ? data.histories[0].hist : []}/>
   );
 }
 

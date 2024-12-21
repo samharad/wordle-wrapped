@@ -42,7 +42,7 @@ function App() {
           <Route path="/input" element={<Input rawHist={rawHist} setRawHist={setRawHist} histDerived={histDerived}/>} />
           <Route path="/input-review" element={<InputReview hist={hist} names={names} setNames={setNames} />} />
           <Route path="/output" element={<GeneratedOutput histDerived={histDerived} width={width} />} />
-          <Route path="/share" element={<SharedOutput width={width} />} />
+          <Route path="/share/:shortId" element={<SharedOutput width={width} />} />
         </Routes>
       </div>
     </>

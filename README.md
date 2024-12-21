@@ -1,12 +1,15 @@
 # TODO
 
-- [ ] Prev buttons in workflow
-- [ ] Make it save/shareable
+- [ ] Make it saveable (cookies)
+- [ ] Add spinner when loading shared wrapped
+- [ ] Make the IDs shorter
 - [ ] Deploy
 - [ ] Favicon
 - [ ] More stats
     - [ ] Year-long participation trend
 - [ ] Consider: placeholder messages
+- [ ] Prev buttons in workflow
+- [x] Make it shareable
 - [x] Test with long names
 - [x] Improve usability instructions
 - [x] Make it look good

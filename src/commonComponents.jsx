@@ -1,5 +1,13 @@
 import {Link} from "react-router";
 
+export function Spinner() {
+  return (
+    <div className="animate-pulse">
+      🎅
+    </div>
+  );
+}
+
 export function MediumButton({ content, onClick, disabled }) {
   return disabled
     ? <button
