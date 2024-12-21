@@ -13,7 +13,7 @@ export default function GeneratedOutput({ width, histDerived, demoMode }) {
   const handleClick = e => {
     (shortId
       ? Promise.resolve([shortId])
-      : addHist(histDerived))
+      : addHist(histDerived, user.id))
       .then(([id]) => {
         // TODO sam FIXME
         const link = `localhost:5173/share/${id}`;

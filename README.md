@@ -4,12 +4,12 @@
 
 - [ ] Make it save-able (local storage)
 - [ ] Deploy
-- [ ] Favicon
 - [ ] More stats
     - [ ] Year-long participation trend
     - [ ] Puzzles completed count (or add to the participation rate)
 - [ ] Consider: placeholder messages
 - [ ] Prev buttons in workflow
+- [x] Favicon
 - [x] Impl auth?
 - [x] 404 handling
 - [x] Make it do the right thing if no data

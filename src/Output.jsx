@@ -23,7 +23,6 @@ import Carousel from "react-multi-carousel";
 import 'react-multi-carousel/lib/styles.css';
 import {BigButton, Card, MediumButton, SmallButton} from "./commonComponents.jsx";
 import {Link} from "react-router";
-import {addHist} from "./instantDb.js";
 
 const dRank = (rank, tieN) => {
   if (rank === 1) {
