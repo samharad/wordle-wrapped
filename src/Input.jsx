@@ -40,8 +40,11 @@ export default function Input({ rawHist, setRawHist, histDerived }) {
   return (
     <div>
       <div className={"flex flex-col"}>
-        <div className="font-bold text-5xl p-6">Enter your Wordle chat history</div>
-
+        <div className="font-bold text-5xl p-3">Enter your Wordle chat history</div>
+        <div className="italic text-white text-xl m-6 p-2 shrink rounded m-auto"
+             style={{margin: "auto"}}>
+          Tip: you may need to copy from your desktop client.
+        </div>
         <div className={"text-3xl py-3"}>
           <div className={""}>
             <textarea id="chat"
@@ -51,7 +54,7 @@ export default function Input({ rawHist, setRawHist, histDerived }) {
                       placeholder={"Paste here!"}
                       cols={18}
                       rows={6}
-                      >
+            >
             </textarea>
           </div>
         </div>

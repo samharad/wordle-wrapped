@@ -7,7 +7,7 @@ export default function Participants({ hist, names, setNames }) {
   }
   return (
     <Card title={"💁 Players"}
-          subtitle={<div className={"text-lg "}>
+          subtitle={<div className={"text-xl "}>
                       <div>
                         <InstructionText content={"Optional: fix up names and enter aliases."}/>
                       </div>
@@ -16,7 +16,7 @@ export default function Participants({ hist, names, setNames }) {
                       </div>
                     </div>}
     >
-      <table className={"table-auto m-auto"}>
+      <table className={"table-auto m-auto text-xl"}>
         <tbody>
         {ps.map((p, i) =>
             <tr key={i}>

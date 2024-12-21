@@ -2,9 +2,7 @@
 
 🟩🎁
 
-- [ ] Make it saveable (local storage)
-- [ ] Make it do the right thing if no data
-- [ ] Impl auth
+- [ ] Make it save-able (local storage)
 - [ ] Deploy
 - [ ] Favicon
 - [ ] More stats
@@ -12,6 +10,9 @@
     - [ ] Puzzles completed count (or add to the participation rate)
 - [ ] Consider: placeholder messages
 - [ ] Prev buttons in workflow
+- [x] Impl auth?
+- [x] 404 handling
+- [x] Make it do the right thing if no data
 - [x] Re-use upload IDs
 - [x] Make the link-copied message temporary
 - [x] Make the IDs shorter
