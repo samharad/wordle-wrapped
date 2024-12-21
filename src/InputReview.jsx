@@ -4,6 +4,7 @@ import {BigButton} from "./commonComponents.jsx";
 
 export default function InputReview({ hist, names, setNames }) {
   if (hist.length === 0) {
+    window.location.href = '/'
     return (<></>);
   }
 

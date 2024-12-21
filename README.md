@@ -1,14 +1,21 @@
 # TODO
 
-- [ ] Make it saveable (cookies)
-- [ ] Add spinner when loading shared wrapped
-- [ ] Make the IDs shorter
+🟩🎁
+
+- [ ] Make it saveable (local storage)
+- [ ] Make it do the right thing if no data
+- [ ] Impl auth
 - [ ] Deploy
 - [ ] Favicon
 - [ ] More stats
     - [ ] Year-long participation trend
+    - [ ] Puzzles completed count (or add to the participation rate)
 - [ ] Consider: placeholder messages
 - [ ] Prev buttons in workflow
+- [x] Re-use upload IDs
+- [x] Make the link-copied message temporary
+- [x] Make the IDs shorter
+- [x] Add spinner when loading shared wrapped
 - [x] Make it shareable
 - [x] Test with long names
 - [x] Improve usability instructions

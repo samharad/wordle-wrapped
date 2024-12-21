@@ -72,6 +72,7 @@ const responsive = {
 
 export default function Output({ width, histDerived, demoMode }) {
   if (histDerived.length === 0) {
+    window.location.href = '/';
     return (<></>);
   }
 

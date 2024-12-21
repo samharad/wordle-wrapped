@@ -22,11 +22,11 @@ export default function SharedOutput({ width }) {
 
   if (error) {
     console.error(error);
+    window.location.href = '/';
   }
-  console.log(data);
 
   return (
-    isLoading
+    !data
       ? <div className={"h-full flex flex-col align-center justify-center content-center text-5xl"}><Spinner /></div>
       : <Output width={width} histDerived={data && data.histories[0] ? data.histories[0].hist : []}/>
   );
