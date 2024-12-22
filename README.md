@@ -2,14 +2,15 @@
 
 🟩🎁
 
-- [ ] Fix broken images
+- [x] Enforce HTTPS
 - [ ] Make it save-able (local storage)
-- [ ] Deploy
 - [ ] More stats
     - [ ] Year-long participation trend
     - [ ] Puzzles completed count (or add to the participation rate)
 - [ ] Consider: placeholder messages
 - [ ] Prev buttons in workflow
+- [x] Deploy
+- [x] Fix broken images
 - [x] Favicon
 - [x] Impl auth?
 - [x] 404 handling
