@@ -11,9 +11,10 @@ export default function GeneratedOutput({ width, histDerived, demoMode }) {
   const [modalIsOpen, setIsOpen] = useState(false);
 
   const handleClick = e => {
+    console.log("USER", user);
     (shortId
       ? Promise.resolve([shortId])
-      : addHist(histDerived, user.id))
+      : addHist(histDerived, user.id, user.email))
       .then(([id]) => {
         const link = window.location.href.includes("localhost") ? `localhost:5173/share/${id}` : `wordlewrapped.com/share/${id}`;
         return navigator.clipboard.writeText(link).then(ignore => id);
