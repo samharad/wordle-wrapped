@@ -2,6 +2,7 @@
 
 🟩🎁
 
+- [ ] Fix broken images
 - [ ] Make it save-able (local storage)
 - [ ] Deploy
 - [ ] More stats
