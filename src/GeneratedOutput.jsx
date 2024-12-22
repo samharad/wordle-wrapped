@@ -15,8 +15,7 @@ export default function GeneratedOutput({ width, histDerived, demoMode }) {
       ? Promise.resolve([shortId])
       : addHist(histDerived, user.id))
       .then(([id]) => {
-        // TODO sam FIXME
-        const link = `localhost:5173/share/${id}`;
+        const link = window.location.href.includes("localhost") ? `localhost:5173/share/${id}` : `wordlewrapped.com/share/${id}`;
         return navigator.clipboard.writeText(link).then(ignore => id);
       }).then(id=> {
       setShortId(id);
