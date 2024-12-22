@@ -3,12 +3,13 @@
 🟩🎁
 
 - [ ] Make it save-able (local storage)
-- [ ] Make it share-able without login?
 - [ ] More stats
     - [ ] Year-long participation trend
     - [ ] Puzzles completed count (or add to the participation rate)
 - [ ] Consider: placeholder messages
 - [ ] Prev buttons in workflow
+- [x] Add frontend monitoring
+- [x] Make it share-able without login?
 - [x] Add email to database objects
 - [x] Add google analytics
 - [x] Enforce HTTPS
