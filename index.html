@@ -25,6 +25,17 @@
     <!--    <meta name="theme-color" content="#fafafa">-->
   </head>
 
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZMWZ93KX7V"></script>
+  <script>
+    console.log("initialized");
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-ZMWZ93KX7V');
+  </script>
+
   <!--  TODO: move these classes-->
   <body class="p-3 bg-dark-green text-white">
     <div id="root" class="h-full"></div>

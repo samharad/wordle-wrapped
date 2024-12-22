@@ -2,13 +2,15 @@
 
 🟩🎁
 
-- [x] Enforce HTTPS
 - [ ] Make it save-able (local storage)
+- [ ] Make it share-able without login
+- [ ] Add google analytics
 - [ ] More stats
     - [ ] Year-long participation trend
     - [ ] Puzzles completed count (or add to the participation rate)
 - [ ] Consider: placeholder messages
 - [ ] Prev buttons in workflow
+- [x] Enforce HTTPS
 - [x] Deploy
 - [x] Fix broken images
 - [x] Favicon

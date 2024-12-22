@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {db} from "./instantDb.js";
 import {useNavigate} from "react-router";
+import {MediumButton} from "./commonComponents.jsx";
 
 function Email({ setSentEmail }) {
   const [email, setEmail] = useState('');
@@ -37,9 +38,8 @@ function Email({ setSentEmail }) {
             />
           </div>
           <div className={"p-3"}>
-            <button type="submit" className={"rounded border p-3"}>
-              Send Code
-            </button>
+            <MediumButton type={"submit"} content={"Send code"}>
+            </MediumButton>
           </div>
         </form>
       </div>
@@ -75,9 +75,8 @@ function MagicCode({sentEmail}) {
             />
           </div>
           <div className={"p-3"}>
-            <button type="submit" className={"rounded border p-3"}>
-              Verify
-            </button>
+            <MediumButton type="submit" content={"Verify"}>
+            </MediumButton>
           </div>
         </form>
       </div>
