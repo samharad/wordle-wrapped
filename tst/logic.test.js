@@ -70,8 +70,8 @@ test('monthlyAverages', () => {
     {person: 'Sam', number: 1278, attempts: 6},
     {person: 'Helena', number: 1278, attempts: 1}];
   expect(calculateMonthlyAverages(data)).toEqual({
-    Sam: { "December 2024": 4, "October 2024": 2 },
-    Helena: { "December 2024": 1 }
+    Sam: { "December 2024": "4.00", "October 2024": "2.00" },
+    Helena: { "December 2024": "1.00" }
   });
 });
 

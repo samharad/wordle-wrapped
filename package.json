@@ -8,7 +8,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "build": "vite build",
-    "postbuild": "cp CNAME dist/",
+    "postbuild": "cp CNAME dist/ && cp -r public dist/public",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest"
