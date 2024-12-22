@@ -2,13 +2,15 @@
 
 🟩🎁
 
+- [ ] Add a note re patience / spinner while copying
+- [ ] Set up a feedback mechanism? Or an "about" mechanism that gives purpose, GH link?
 - [ ] Make it save-able (local storage)
-- [ ] Fix the 404 issue
 - [ ] More stats
     - [ ] Year-long participation trend
     - [ ] Puzzles completed count (or add to the participation rate)
 - [ ] Consider: placeholder messages
 - [ ] Prev buttons in workflow
+- [x] Fix the 404 issue
 - [x] Add frontend monitoring
 - [x] Make it share-able without login?
 - [x] Add email to database objects
