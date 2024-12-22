@@ -3,6 +3,7 @@
 🟩🎁
 
 - [ ] Add a note re patience / spinner while copying
+- [ ] Get iMessage preview working (i.e. fix og thing... requires png probably...)
 - [ ] Set up a feedback mechanism? Or an "about" mechanism that gives purpose, GH link?
 - [ ] Make it save-able (local storage)
 - [ ] More stats
