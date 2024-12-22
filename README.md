@@ -3,6 +3,7 @@
 🟩🎁
 
 - [ ] Make it save-able (local storage)
+- [ ] Fix the 404 issue
 - [ ] More stats
     - [ ] Year-long participation trend
     - [ ] Puzzles completed count (or add to the participation rate)

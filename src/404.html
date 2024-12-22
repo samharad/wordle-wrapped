@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Wordle Wrapped</title>
+  <link rel="stylesheet" href="css/output.css">
+  <meta name="description" content="">
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+  <meta property="og:image:alt" content="">
+
+  <link rel="icon" href="favicon.svg" sizes="any">
+</head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZMWZ93KX7V"></script>
+<script>
+  console.log("initialized");
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZMWZ93KX7V');
+</script>
+
+<script>
+  // Redirect to index.html but keep the path
+  var pathname = window.location.pathname;
+
+  window.location.replace(`?redirectTo=${pathname}`);
+</script>
+
+<!--  TODO: move these classes-->
+<body class="p-3 bg-dark-green text-white">
+<div id="root" class="h-full"></div>
+<!--<script type="module" src="/src/main.jsx"></script>-->
+</body>
+</html>
