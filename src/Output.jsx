@@ -99,14 +99,14 @@ export default function Output({ width, histDerived, demoMode }) {
   const CustomDot = ({ onClick, index, active }) => {
     return (
       <button
+        className={"text-lg"}
         onClick={onClick}
         style={{
           margin: "5px",
           cursor: "pointer",
           transition: "background-color 0.3s ease",
           scale: active ? "1.4" : "1"
-        }}
-      >
+        }}>
         ⭐️
       </button>
     );

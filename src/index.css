@@ -63,3 +63,8 @@ html, body {
 .react-multiple-carousel__arrow--left:hover {
     transform: scale(1.2); /* Increase size by 20% */
 }
+
+.instant-devtool-toggler {
+    left: unset !important;
+    right: 24px !important;
+}

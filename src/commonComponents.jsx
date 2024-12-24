@@ -47,8 +47,8 @@ export function SmallButton({ content, onClick, disabled }) {
     </button>;
 }
 
-export const Card = ({ title, subtitle, children }) => (
-  <div className={"border rounded bg-white text-dark-green md:mx-40 py-3 px-2"}>
+export const Card = ({ title, subtitle, children, className }) => (
+  <div className={"border rounded bg-white text-dark-green md:mx-40 py-3 px-2 " + className}>
     <div className="text-4xl font-bold">{title}</div>
     <div>{subtitle}</div>
     <div className={"flex items-center"}>
