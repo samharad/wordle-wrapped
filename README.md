@@ -2,6 +2,7 @@
 
 🟩🎁
 
+- [ ] Add snow in the background
 - [ ] Add a note re patience / spinner while copying
 - [ ] Set up a feedback mechanism? Or an "about" mechanism that gives purpose, GH link?
 - [ ] Make it save-able (local storage)
