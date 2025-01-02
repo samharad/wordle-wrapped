@@ -31,3 +31,6 @@ dist-ssr
 .env.sentry-build-plugin
 
 .vite
+
+chat-2024.txt
+wrapped-2024.txt
